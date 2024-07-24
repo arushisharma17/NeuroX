@@ -1,25 +1,23 @@
 ---
 # SYSTEM DESIGN
 ---
-
 ## Table of Contents
-
+---
 1. [Computer Architecture](#computer-architecture)
 2. [Application Architecture](#application-architecture)
 3. [Design Requirements](#design-requirements)
 4. [Networking Basics](#networking-basics)
 5. [TCP and UDP](#tcp-and-udp)
 6. [Domain Name System (DNS)](#domain-name-system-dns)
-
 ---
 ## Computer Architecture
 ---
-Understanding the foundational building blocks of a computer is crucial for designing efficient systems. This section explores the essential components of computer architecture.
+Understanding the building blocks of a computer is essential for designing efficient systems. This section explores the core components of computer architecture.
 
 ### Components
 
 #### Disk
-A disk is the primary storage device in a computer, providing persistent storage, meaning that data remains stored even when the machine is powered off. Modern computers typically use disks with capacities measured in terabytes (TBs). Two common types of disks are Hard Disk Drives (HDDs) and Solid State Drives (SSDs). HDDs are mechanical devices with moving parts, which can wear down over time, while SSDs are faster and more reliable due to their lack of moving parts.
+A disk is the primary storage device in a computer, providing persistent storage, meaning data remains stored even when the machine is powered off. Modern computers typically use disks with capacities measured in terabytes (TBs). Two common types of disks are Hard Disk Drives (HDDs) and Solid State Drives (SSDs). HDDs are mechanical devices with moving parts, which can wear down over time, while SSDs are faster and more reliable due to their lack of moving parts.
 
 #### RAM
 Random Access Memory (RAM) is a type of volatile memory, meaning data is lost when the computer is turned off. RAM is used for storing data that is actively being processed by the CPU. It is significantly faster than disk storage but is also more expensive and typically smaller in capacity, ranging from 1GB to 128GB. RAM speeds up data access times and is essential for running applications smoothly.
@@ -99,6 +97,9 @@ Throughput is the measure of how much data or how many operations a system can h
 #### Latency
 Latency is the delay between a request and the response. Minimizing latency is crucial for improving the user experience and the overall performance of the system. Latency can be internal (within the computer's components) or external (in network communications).
 
+### Closing Notes
+Designing effective systems involves balancing multiple factors, including availability, reliability, throughput, and latency. The goal is to create systems that handle failures gracefully, have high performance, and meet the required quality standards. Future topics will delve deeper into optimizing these aspects and ensuring efficient system design.
+
 ---
 ## Networking Basics
 ---
@@ -107,17 +108,17 @@ This section introduces the fundamental concepts of networking, focusing on how 
 
 ### What is a Network?
 
-A network is a collection of devices connected to share resources and data. Each device in a network is assigned a unique IP address, allowing it to send and receive data.
+A network is a collection of devices connected to share resources and data. Each device in a network is assigned a unique IP address, allowing it to send and receive data. We use the analogy of Alice and Bob, two characters representing devices on the network, to explain these concepts. Alice wants to send an invitation to Bob, and in networking terms, this invitation is akin to data being transmitted over a network.
 
 ### IP Address
 
-An IP address is a unique identifier for a device on a network. There are two types of IP addresses:
-- **IPv4**: 32-bit address, expressed in the format `0.0.0.0` to `255.255.255.255`.
-- **IPv6**: 128-bit address, expressed in the format `xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx`.
+An IP address is a unique identifier for a device on a network. There are two main types:
+- **IPv4**: 32-bit address, expressed in the format `0.0.0.0` to `255.255.255.255`. IPv4 addresses are running out due to the exponential growth of the internet, which led to the development of IPv6.
+- **IPv6**: 128-bit address, expressed in the format `xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx`. IPv6 provides a significantly larger address space, making address exhaustion highly improbable.
 
 ### Protocols of Sending Data Over a Network
 
-Data is transferred over a network using data packets, which include a header (source and destination IP addresses), data (payload), and a trailer.
+Data is transferred over a network using data packets. These packets consist of a header (source and destination IP addresses), data (payload), and a trailer.
 
 ### TCP (Transmission Control Protocol)
 
@@ -125,28 +126,30 @@ TCP ensures reliable data transmission by establishing a connection through a 3-
 
 ### Application Data
 
-Application data can take various forms, such as HTTP POST or GET requests, and resides in the application segment of the packet.
+Application data can take various forms, such as HTTP POST or GET requests, and resides in the application segment of the packet. For example, in an HTTP POST request, the information we wish to transmit is in the application data portion of the packet.
 
 ### Network Layers
 
-Protocols are organized into layers:
-- **Network Layer**: IP protocol, handles routing of data.
-- **Transport Layer**: TCP protocol, ensures reliable data transmission.
-- **Application Layer**: HTTP protocol, enables client-server communication.
+Protocols are organized into layers to create a hierarchical structure:
+- **Network Layer**: Includes the IP protocol, which handles the routing of data.
+- **Transport Layer**: Includes the TCP protocol, which ensures reliable data transmission.
+- **Application Layer**: Includes the HTTP protocol, which enables client-server communication.
 
 ### Public vs Private Network
 
 - **Public IP Address**: Unique identifier for a device on the internet, accessible globally.
-- **Private IP Address**: Used within a local network, not accessible from the internet.
+- **Private IP Address**: Used within a local
+
+ network, not accessible from the internet. Private IP addresses are used in home or office networks.
 
 ### Static vs Dynamic IP Addresses
 
 - **Dynamic IP Address**: Temporarily assigned, changes with each connection, commonly used for clients.
-- **Static IP Address**: Permanently assigned, does not change, often used for servers.
+- **Static IP Address**: Permanently assigned, does not change, often used for servers. Static IP addresses require manual configuration.
 
 ### Ports
 
-Ports are numeric identifiers used to distinguish between different services running on the same device. For example, port 80 is typically used for HTTP, and port 443 for HTTPS.
+Ports are numeric identifiers used to distinguish between different services running on the same device. For example, port 80 is typically used for HTTP, and port 443 for HTTPS. Ports allow multiple services to run on the same IP address without conflict.
 
 ---
 ## TCP and UDP
@@ -160,7 +163,7 @@ TCP is a connection-oriented protocol that ensures reliable data transmission. I
 
 ### Use Cases for TCP
 
-TCP is suitable for applications requiring reliable data delivery, such as web browsing, email, and file transfers.
+TCP is suitable for applications requiring reliable data delivery, such as web browsing, email, and file transfers. These applications need to ensure that all data is received accurately and in order.
 
 ### UDP (User Datagram Protocol)
 
@@ -169,6 +172,9 @@ UDP is a connectionless protocol that allows faster data transmission but does n
 ### Use Cases for UDP
 
 UDP is preferred for real-time applications like gaming and streaming, where occasional data loss is acceptable to maintain speed and performance.
+
+### Closing Notes
+Understanding the differences between TCP and UDP and their appropriate use cases is crucial for designing network applications that meet specific performance and reliability requirements.
 
 ---
 ## Domain Name System (DNS)
