@@ -97,9 +97,6 @@ Throughput is the measure of how much data or how many operations a system can h
 #### Latency
 Latency is the delay between a request and the response. Minimizing latency is crucial for improving the user experience and the overall performance of the system. Latency can be internal (within the computer's components) or external (in network communications).
 
-### Closing Notes
-Designing effective systems involves balancing multiple factors, including availability, reliability, throughput, and latency. The goal is to create systems that handle failures gracefully, have high performance, and meet the required quality standards. Future topics will delve deeper into optimizing these aspects and ensuring efficient system design.
-
 ---
 ## Networking Basics
 ---
@@ -172,9 +169,6 @@ UDP is a connectionless protocol that allows faster data transmission but does n
 ### Use Cases for UDP
 
 UDP is preferred for real-time applications like gaming and streaming, where occasional data loss is acceptable to maintain speed and performance.
-
-### Closing Notes
-Understanding the differences between TCP and UDP and their appropriate use cases is crucial for designing network applications that meet specific performance and reliability requirements.
 
 ---
 ## Domain Name System (DNS)
