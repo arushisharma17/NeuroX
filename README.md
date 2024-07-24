@@ -9,6 +9,13 @@
 4. [Networking Basics](#networking-basics)
 5. [TCP and UDP](#tcp-and-udp)
 6. [Domain Name System (DNS)](#domain-name-system-dns)
+7. [HTTP](#http)
+8. [WebSockets](#websockets)
+9. [API Paradigms](#api-paradigms)
+10. [API Design](#api-design)
+11. [Caching](#caching)
+12. [CDNs](#cdns)
+
 ---
 ## Computer Architecture
 ---
@@ -195,5 +202,165 @@ A URL consists of several parts:
 - **Domain**: The primary domain and top-level domain (TLD).
 - **Path**: Specifies a particular resource within the domain.
 - **Ports**: Specifies the port number if different from the default (e.g., `localhost:8080`).
+
+---
+## HTTP
+---
+
+HyperText Transfer Protocol (HTTP) is the foundation of data communication on the World Wide Web. It defines the structure of messages and the way they are transmitted over a network.
+
+### What is HTTP?
+
+HTTP is an application-level protocol used for transmitting hypertext over the internet. It follows a client-server model, where the client makes requests and the server sends responses. HTTP is stateless, meaning each request from a client to a server is independent.
+
+### HTTP Methods
+
+HTTP defines several methods to indicate the desired action to be performed on a resource:
+- **GET**: Retrieve data from the server.
+- **POST**: Send data to the server to create a new resource.
+- **PUT**: Update an existing resource on the server.
+- **DELETE**: Remove a resource from the server.
+
+### Status Codes
+
+HTTP status codes are issued by a server in response to a client's request:
+- **1xx (Informational)**: Request received, continuing process.
+- **2xx (Successful)**: Request successfully received, understood, and accepted.
+- **3xx (Redirection)**: Further action needs to be taken to complete the request.
+- **4xx (Client Error)**: Request contains bad syntax or cannot be fulfilled.
+- **5xx (Server Error)**: Server failed to fulfill an apparently valid request.
+
+### Headers
+
+HTTP headers are used to pass additional information with an HTTP request or response. Common headers include:
+- **Content-Type**: Indicates the media type of the resource.
+- **Authorization**: Contains the credentials to authenticate a user agent with a server.
+- **Cache-Control**: Directives for caching mechanisms in both requests and responses.
+
+### HTTPS
+
+HTTPS (HTTP Secure) is an extension of HTTP. It uses SSL/TLS to encrypt data for secure communication over a network, ensuring data integrity and confidentiality.
+
+---
+## WebSockets
+---
+
+WebSockets provide a full-duplex communication channel over a single, long-lived connection, allowing for real-time data transfer between the client and server.
+
+### What are WebSockets?
+
+WebSockets enable two-way communication between a client and a server. Unlike HTTP, which is a request-response protocol, WebSockets allow for persistent connections where both parties can send data at any time.
+
+### Establishing a WebSocket Connection
+
+1. **Handshake**: The client initiates a WebSocket handshake by sending an HTTP request with an `Upgrade` header.
+2. **Server Response**: If the server supports WebSockets, it responds with a `101 Switching Protocols` status code.
+3. **Connection Established**: The WebSocket connection is established, and both parties can now send and receive data freely.
+
+### Use Cases
+
+WebSockets are ideal for applications requiring real-time updates, such as:
+- **Chat Applications**: Instant messaging and group chats.
+- **Live Streaming**: Real-time video and audio streaming.
+- **Gaming**: Real-time multiplayer games.
+
+### Advantages
+
+- **Low Latency**: Real-time communication with minimal delay.
+- **Efficiency**: Reduced overhead compared to HTTP polling.
+- **Persistent Connection**: Eliminates the need for repeated handshakes.
+
+---
+## API Paradigms
+---
+
+APIs (Application Programming Interfaces) define how software components interact. There are various paradigms for designing APIs, each with its unique characteristics and use cases.
+
+### REST (Representational State Transfer)
+
+REST is an architectural style that uses standard HTTP methods and stateless communication. It is based on resources identified by URLs and can handle various formats like JSON and XML.
+
+### GraphQL
+
+GraphQL is a query language for APIs that allows clients to request specific data. It provides flexibility by enabling clients to define the structure of the response, reducing over-fetching and under-fetching of data.
+
+### gRPC
+
+gRPC is a high-performance RPC (Remote Procedure Call) framework that uses HTTP/2 for transport and Protocol Buffers for serialization. It supports multiple languages and is suitable for microservices and real-time communication.
+
+---
+## API Design
+---
+
+Designing APIs involves creating a consistent and user-friendly interface for developers to interact with your application.
+
+### Principles of Good API Design
+
+- **Consistency**: Use standard conventions and consistent naming.
+- **Simplicity**: Keep the API simple and intuitive.
+- **Documentation**: Provide comprehensive and clear documentation.
+- **Versioning**: Implement versioning to handle changes and maintain backward compatibility.
+
+### RESTful API Design
+
+- **Resources and URIs**: Define resources and use logical URIs to access them.
+- **HTTP Methods**: Use appropriate HTTP methods (GET, POST, PUT, DELETE) for operations.
+- **Status Codes**: Return meaningful HTTP status codes in responses.
+- **Hypermedia**: Implement HATEOAS (Hypermedia as the Engine of Application State) to guide clients through the API.
+
+---
+## Caching
+---
+
+Caching improves the performance of a system by storing copies of frequently accessed data in a location that can be accessed faster than the original source.
+
+### What is Caching?
+
+Caching involves storing data temporarily to serve future requests more quickly. It reduces the load on the primary data source and improves response times.
+
+### Types of Caching
+
+- **Client-Side Caching**: Data is cached on the client-side (e.g., browser cache).
+- **Server-Side Caching**: Data is cached on the server-side (e.g., in-memory caching).
+- **CDNs**: Content Delivery Networks cache content at edge locations close to users.
+
+### Caching Strategies
+
+- **Write-Through Cache**: Data is written to both the cache and the main storage simultaneously.
+- **Write-Back Cache**: Data is written to the cache first and to the main storage later.
+- **Write-Around Cache**: Data is written only to the main storage, and the cache is updated when data is read.
+
+### Cache Eviction Policies
+
+- **LRU (Least Recently Used)**: Removes the least recently accessed items first.
+- **LFU (Least Frequently Used)**: Removes the least frequently accessed items first.
+- **FIFO (First In, First Out)**: Removes the oldest items first.
+
+---
+## CDNs
+---
+
+Content Delivery Networks (CDNs) improve the performance and availability of web applications by distributing content across multiple servers located around the world.
+
+### What are CDNs?
+
+CDNs consist of a network of servers (edge servers) that cache and deliver content to users based on their geographical location. This reduces latency and improves load times.
+
+### Benefits of CDNs
+
+- **Improved Performance**: Faster content delivery by caching content closer to users.
+- **Scalability**: Handle large volumes of traffic without overloading the origin server.
+- **Reliability**: Redundancy and failover mechanisms to ensure high availability.
+
+### Types of CDNs
+
+- **Push CDNs**: Content is manually uploaded to CDN servers.
+- **Pull CDNs**: Content is fetched from the origin server and cached as needed.
+
+### Use Cases
+
+CDNs are commonly used for delivering:
+- **Static Content**: Images, videos, CSS, and JavaScript files.
+- **Dynamic Content**: Real-time data and personalized content.
 
 ---
