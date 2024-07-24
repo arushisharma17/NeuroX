@@ -7,6 +7,9 @@
 1. [Computer Architecture](#computer-architecture)
 2. [Application Architecture](#application-architecture)
 3. [Design Requirements](#design-requirements)
+4. [Networking Basics](#networking-basics)
+5. [TCP and UDP](#tcp-and-udp)
+6. [Domain Name System (DNS)](#domain-name-system-dns)
 
 ---
 ## Computer Architecture
@@ -96,8 +99,105 @@ Throughput is the measure of how much data or how many operations a system can h
 #### Latency
 Latency is the delay between a request and the response. Minimizing latency is crucial for improving the user experience and the overall performance of the system. Latency can be internal (within the computer's components) or external (in network communications).
 
-### Closing Notes
-Designing effective systems involves balancing multiple factors, including availability, reliability, throughput, and latency. The goal is to create systems that handle failures gracefully, have high performance, and meet the required quality standards. Future topics will delve deeper into optimizing these aspects and ensuring efficient system design.
-
+---
+## Networking Basics
 ---
 
+This section introduces the fundamental concepts of networking, focusing on how devices communicate over a network.
+
+### What is a Network?
+
+A network is a collection of devices connected to share resources and data. Each device in a network is assigned a unique IP address, allowing it to send and receive data.
+
+### IP Address
+
+An IP address is a unique identifier for a device on a network. There are two types of IP addresses:
+- **IPv4**: 32-bit address, expressed in the format `0.0.0.0` to `255.255.255.255`.
+- **IPv6**: 128-bit address, expressed in the format `xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx`.
+
+### Protocols of Sending Data Over a Network
+
+Data is transferred over a network using data packets, which include a header (source and destination IP addresses), data (payload), and a trailer.
+
+### TCP (Transmission Control Protocol)
+
+TCP ensures reliable data transmission by establishing a connection through a 3-way handshake and retransmitting lost packets. It uses sequence numbers to ensure packets are reassembled correctly at the destination.
+
+### Application Data
+
+Application data can take various forms, such as HTTP POST or GET requests, and resides in the application segment of the packet.
+
+### Network Layers
+
+Protocols are organized into layers:
+- **Network Layer**: IP protocol, handles routing of data.
+- **Transport Layer**: TCP protocol, ensures reliable data transmission.
+- **Application Layer**: HTTP protocol, enables client-server communication.
+
+### Public vs Private Network
+
+- **Public IP Address**: Unique identifier for a device on the internet, accessible globally.
+- **Private IP Address**: Used within a local network, not accessible from the internet.
+
+### Static vs Dynamic IP Addresses
+
+- **Dynamic IP Address**: Temporarily assigned, changes with each connection, commonly used for clients.
+- **Static IP Address**: Permanently assigned, does not change, often used for servers.
+
+### Ports
+
+Ports are numeric identifiers used to distinguish between different services running on the same device. For example, port 80 is typically used for HTTP, and port 443 for HTTPS.
+
+---
+## TCP and UDP
+---
+
+This section delves deeper into the characteristics and use cases of TCP and UDP.
+
+### TCP (Transmission Control Protocol)
+
+TCP is a connection-oriented protocol that ensures reliable data transmission. It establishes a connection through a 3-way handshake and retransmits lost packets. TCP is slower due to its reliability features but is essential for applications where data integrity is crucial.
+
+### Use Cases for TCP
+
+TCP is suitable for applications requiring reliable data delivery, such as web browsing, email, and file transfers.
+
+### UDP (User Datagram Protocol)
+
+UDP is a connectionless protocol that allows faster data transmission but does not guarantee delivery. It is suitable for applications where speed is more critical than reliability, such as online gaming and video streaming.
+
+### Use Cases for UDP
+
+UDP is preferred for real-time applications like gaming and streaming, where occasional data loss is acceptable to maintain speed and performance.
+
+---
+## Domain Name System (DNS)
+---
+
+This section explains the Domain Name System (DNS), which translates human-readable domain names into numerical IP addresses.
+
+### What is DNS?
+
+DNS is like the internet's phone book, converting domain names (e.g., google.com) into IP addresses (e.g., 142.251.211.238). This allows computers to route requests correctly on the internet.
+
+### ICANN and Domain Name Registrars
+
+ICANN (Internet Corporation for Assigned Names and Numbers) manages the overall coordination and security of DNS. Domain registrars, certified by ICANN, handle domain name registration and maintenance.
+
+### DNS Records
+
+DNS records store information about domains. The most common type, the A (Address) record, links a domain name to an IPv4 address. This ensures that requests to a domain are routed to the correct server.
+
+### Anatomy of a URL
+
+A URL consists of several parts:
+- **Protocol (Scheme)**: Indicates the protocol used (e.g., HTTP, HTTPS).
+- **Domain**: The primary domain and top-level domain (TLD).
+- **Path**: Specifies a particular resource within the domain.
+- **Ports**: Specifies the port number if different from the default (e.g., `localhost:8080`).
+
+### Closing Notes
+
+Understanding networking fundamentals, including TCP, UDP, and DNS, is essential for designing and maintaining efficient systems. These components ensure reliable, fast, and accurate communication over the internet.
+
+---
