@@ -15,6 +15,15 @@
 10. [API Design](#api-design)
 11. [Caching](#caching)
 12. [CDNs](#cdns)
+13. [Proxies and Load Balancing](#proxies-and-load-balancing)
+14. [Consistent Hashing](#consistent-hashing)
+15. [SQL](#sql)
+16. [NoSQL](#nosql)
+17. [Replication and Sharding](#replication-and-sharding)
+18. [CAP Theorem](#cap-theorem)
+19. [Object Storage](#object-storage)
+20. [Message Queues](#message-queues)
+21. [MapReduce](#mapreduce)
 
 ---
 ## Computer Architecture
@@ -362,5 +371,181 @@ CDNs consist of a network of servers (edge servers) that cache and deliver conte
 CDNs are commonly used for delivering:
 - **Static Content**: Images, videos, CSS, and JavaScript files.
 - **Dynamic Content**: Real-time data and personalized content.
+
+---
+## Proxies and Load Balancing
+---
+
+### Proxies
+
+Proxies act as intermediaries between clients and servers. They forward client requests to servers and relay the server responses back to the clients. This helps in masking the identity of the client and can provide additional security by filtering requests.
+
+### Load Balancing
+
+Load balancing is a technique used to distribute network traffic across multiple servers. This ensures no single server bears too much demand, improving overall responsiveness and availability.
+
+- **Round Robin**: Requests are distributed sequentially.
+- **Least Connections**: Requests are sent to the server with the fewest active connections.
+- **IP Hash**: Requests are directed based on the client's IP address.
+
+---
+## Consistent Hashing
+---
+
+Consistent hashing is a technique used to distribute data across a distributed system in a way that minimizes reorganization when nodes are added or removed.
+
+### What is Consistent Hashing?
+
+Consistent hashing distributes load across servers using a ring-based structure. When a server is added or removed, only a small portion of the keys need to be remapped.
+
+### How It Works
+
+- **Hash Function**: Each request is hashed, and the result determines its placement on the ring.
+- **Nodes as Points**: Each server is a point on the ring.
+- **Mapping Requests**: Requests are assigned to the nearest server in a clockwise direction.
+
+### Advantages
+
+- **Scalability**: Easily add or remove servers with minimal disruption.
+- **Efficiency**: Balances load evenly across servers.
+
+---
+## SQL
+---
+
+### What is SQL?
+
+SQL (Structured Query Language) databases are relational database management systems (RDBMS) that store data in tables. They use structured schemas to define the data format.
+
+### Key Concepts
+
+- **Tables**: Data is stored in tables, which consist of rows and columns.
+- **Primary Keys**: Unique identifiers for table rows.
+- **Foreign Keys**: References to primary keys in other tables, establishing relationships between tables.
+
+### ACID Properties
+
+- **Atomicity**: All operations in a transaction are completed or none are.
+- **Consistency**: Transactions bring the database from one valid state to another.
+- **Isolation**: Transactions are processed independently and transparently.
+- **Durability**: Completed transactions are saved permanently.
+
+---
+## NoSQL
+---
+
+### What is NoSQL?
+
+NoSQL databases provide a mechanism for storage and retrieval of data that is modeled in means other than the tabular relations used in relational databases.
+
+### Types of NoSQL Databases
+
+- **Document Stores**: Store data in document formats like JSON (e.g., MongoDB).
+- **Key-Value Stores**: Store data as key-value pairs (e.g., Redis).
+- **Column Stores**: Store data in columns rather than rows (e.g., Cassandra).
+- **Graph Databases**: Store data in graph structures with nodes, edges, and properties (e.g., Neo4j).
+
+### Advantages
+
+- **Scalability**: Easily scale out horizontally.
+- **Flexibility**: Schema-less design allows for flexible and dynamic data models.
+- **Performance**: Optimized for specific use cases, often providing high performance for particular types of queries.
+
+---
+## Replication and Sharding
+---
+
+### Replication
+
+Replication involves copying data from one database server to others, ensuring high availability and redundancy.
+
+- **Leader-Follower**: One server (leader) handles writes, and followers replicate the data.
+- **Synchronous Replication**: Changes are replicated immediately, ensuring consistency but adding latency.
+- **Asynchronous Replication**: Changes are replicated with a delay, reducing latency but risking inconsistency.
+
+### Sharding
+
+Sharding involves splitting a database into smaller, more manageable pieces, called shards. Each shard is a separate database, allowing for horizontal scaling.
+
+- **Range-Based Sharding**: Data is divided based on ranges of values.
+- **Hash-Based Sharding**: Data is distributed based on a hash function.
+- **Challenges**: Ensuring data consistency, maintaining performance, and managing complex queries across shards.
+
+---
+## CAP Theorem
+---
+
+### What is CAP Theorem?
+
+The CAP Theorem states that a distributed system can achieve only two out of three guarantees: Consistency, Availability, and Partition Tolerance.
+
+### Components
+
+- **Consistency**: Every read receives the most recent write.
+- **Availability**: Every request receives a response, without guarantee that it contains the most recent write.
+- **Partition Tolerance**: The system continues to operate despite network partitions.
+
+### Trade-Offs
+
+- **CA (Consistency and Availability)**: Sacrifices partition tolerance.
+- **CP (Consistency and Partition Tolerance)**: Sacrifices availability.
+- **AP (Availability and Partition Tolerance)**: Sacrifices consistency.
+
+---
+## Object Storage
+---
+
+### What is Object Storage?
+
+Object storage manages data as objects, which include the data itself, metadata, and a unique identifier.
+
+### Features
+
+- **Flat Address Space**: Objects are stored in a flat namespace, improving scalability.
+- **Metadata**: Rich metadata allows for efficient indexing and retrieval.
+- **Use Cases**: Ideal for storing large unstructured data like images, videos, and backups.
+
+### Examples
+
+- **AWS S3**: A popular object storage service that provides scalable storage.
+- **Google Cloud Storage**: Another widely used object storage service.
+
+---
+## Message Queues
+---
+
+### What are Message Queues?
+
+Message queues enable asynchronous communication between services by storing messages in a queue until they can be processed.
+
+### Models
+
+- **Push-Based**: The queue pushes messages to the consumer.
+- **Pull-Based**: The consumer pulls messages from the queue.
+
+### Benefits
+
+- **Decoupling**: Allows services to operate independently.
+- **Scalability**: Handles high loads by queuing messages for later processing.
+- **Reliability**: Ensures messages are not lost and are processed eventually.
+
+---
+## MapReduce
+---
+
+### What is MapReduce?
+
+MapReduce is a programming model for processing large data sets with a distributed algorithm on a cluster.
+
+### Process
+
+- **Map Phase**: Processes input data and converts it into a set of key-value pairs.
+- **Shuffle and Sort Phase**: Groups the key-value pairs by key.
+- **Reduce Phase**: Processes each group and combines the values to produce the final output.
+
+### Applications
+
+- **Data Processing**: Used for tasks like sorting, counting, and data analysis on large data sets.
+- **Hadoop**: An open-source framework that implements MapReduce for distributed processing.
 
 ---
