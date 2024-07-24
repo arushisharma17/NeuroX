@@ -196,8 +196,4 @@ A URL consists of several parts:
 - **Path**: Specifies a particular resource within the domain.
 - **Ports**: Specifies the port number if different from the default (e.g., `localhost:8080`).
 
-### Closing Notes
-
-Understanding networking fundamentals, including TCP, UDP, and DNS, is essential for designing and maintaining efficient systems. These components ensure reliable, fast, and accurate communication over the internet.
-
 ---
