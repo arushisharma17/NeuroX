@@ -18,7 +18,7 @@ import torch
 from neurox.data.writer import ActivationsWriter
 
 from tqdm import tqdm
-from transformers import AutoModel, AutoTokenizer
+from transformers import AutoModel, AutoTokenizer, AutoModelForCausalLM, AutoConfig
 
 
 def get_model_and_tokenizer(model_desc, device="cpu", random_weights=False):
@@ -54,8 +54,24 @@ def get_model_and_tokenizer(model_desc, device="cpu", random_weights=False):
     else:
         model_name = model_desc[0]
         tokenizer_name = model_desc[1]
-    model = AutoModel.from_pretrained(model_name, output_hidden_states=True).to(device)
-    tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
+    
+    # Load the model configuration
+    config = AutoConfig.from_pretrained(model_name)
+    print("device:", device)
+
+    # Check the model type and choose the appropriate model class
+    if config.is_decoder or config.model_type in ["gpt", "gpt2", "gpt_neo", "gpt_j", "bloom", "llama"]:
+        # Use AutoModelForCausalLM for causal language models
+        model = AutoModelForCausalLM.from_pretrained(
+            model_name,
+            return_dict_in_generate=True,
+            output_hidden_states=True,
+            trust_remote_code=True
+        ).to(device)
+    else:
+        # Use AutoModel for encoder-only or sequence classification models
+        model = AutoModel.from_pretrained(model_name, output_hidden_states=True).to(device)
+        tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 
     if random_weights:
         print("Randomizing weights")
