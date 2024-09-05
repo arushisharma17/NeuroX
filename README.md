@@ -10,7 +10,8 @@ module load git
 First, clone the **NeuroX** repository and set up the environment for extracting activations.
 
 ```bash
-cd /work/LAS/jannesar-lab/arushi/Latent\_Concept\_Analysis/
+cd /work/LAS/jannesar-lab/arushi/LatentConceptAnalysis
+cd <your project dir>
 
 # Clone the NeuroX repository
 git clone https://github.com/arushisharma17/NeuroX.git
