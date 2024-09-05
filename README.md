@@ -3,6 +3,9 @@
 ## Instructions for Pronto
 
 ### 1. Clone and Set Up NeuroX
+module purge
+module load micromamba
+module load git
 
 First, clone the **NeuroX** repository and set up the environment for extracting activations.
 
