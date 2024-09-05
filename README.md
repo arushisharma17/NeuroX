@@ -1,8 +1,8 @@
 # NeuroX Toolkit
 
-##Instructions for Pronto
+## Instructions for Pronto
 
-## 1. Clone and Set Up NeuroX
+### 1. Clone and Set Up NeuroX
 
 First, clone the **NeuroX** repository and set up the environment for extracting activations.
 
@@ -17,14 +17,14 @@ cd NeuroX
 eval "$(micromamba shell hook --shell=bash)"
 
 # Create and activate the 'getactivations' environment from the NeuroX repository
-micromamba env create --name=getactivations
+micromamba env create --name=env_activations
 
 # Activate the environment
-micromamba activate getactivations
+micromamba activate env_activations
 
 # Check if environment activation was successful and proceed with package installation
-if micromamba activate getactivations; then
-    echo "Environment 'getactivations' activated successfully."
+if micromamba activate env_activations; then
+    echo "Environment 'env_activations' activated successfully."
 
     # Install Hugging Face transformers package
     python -m pip install git+https://github.com/huggingface/transformers
@@ -39,7 +39,7 @@ if micromamba activate getactivations; then
     # Deactivate environment after setup
     micromamba deactivate
 else
-    echo "Failed to activate environment 'getactivations'."
+    echo "Failed to activate environment 'env_activations'."
     exit 1
 fi
 ```
