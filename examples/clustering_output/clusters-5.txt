@@ -1,0 +1,10 @@
+word_3|||0
+word_4|||0
+word_8|||0
+word_9|||0
+word_7|||1
+word_1|||2
+word_2|||2
+word_5|||2
+word_6|||3
+word_0|||4

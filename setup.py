@@ -37,6 +37,7 @@ setup(
         "matplotlib>=3.7.1",
         "tqdm>=4.64.1",
         "seaborn==0.11.1",
+        "dill==0.3.4",
         
     ],
     python_requires=">=3.6",

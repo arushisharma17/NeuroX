@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.cluster import AgglomerativeClustering
 from scipy.cluster.hierarchy import linkage, dendrogram
 import matplotlib.pyplot as plt
-from clustering.utils import load_data, save_clustering_results, generate_synthetic_data
+from conceptx.utils import load_data, save_clustering_results, generate_synthetic_data
 
 class AgglomerativeClusteringPipeline:
     def __init__(self, output_path='./output', num_clusters=5):
