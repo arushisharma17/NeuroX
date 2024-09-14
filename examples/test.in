@@ -8,4 +8,3 @@ userParam , WS . Path . User . Version1 . userCreate ( ) ) ) ;
 } public User updateUser ( User userParam ) 
 return new User ( this . postJson ( 
 userParam , WS . Path . User . Version1 . userUpdate ( ) ) ) ; 
-
