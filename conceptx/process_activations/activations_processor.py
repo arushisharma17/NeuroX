@@ -200,6 +200,48 @@ def process_dataset(input_file, sentence_file, min_freq, max_freq, del_freq, out
 
     # Step 5: Save the filtered dataset
     save_data(filtered_dataset, f"{output_file}_dataset.json")
+    
+#---------------------------extract_data.py ----------------------
+
+import json
+import numpy as np
+from tqdm import tqdm
+
+def read_json_file(input_file):
+    """Reads the JSON input file and extracts tokens and points."""
+    print("Reading " + input_file)
+    tokens = []
+    points = []
+    with open(input_file, 'r') as f:
+        dataset = json.load(f)
+        for entry in tqdm(dataset, desc="Processing entries"):
+            tokens.append(entry[0])  # Assuming tokens are in entry[0]
+            points.append(entry[1])  # Assuming points are in entry[1]
+    return tokens, np.array(points)
+
+def save_vocab_file(output_path, output_vocab_file, tokens):
+    """Saves the vocabulary tokens to a file."""
+    if output_vocab_file is None:
+        output_vocab_file = output_path + "/processed-vocab.npy"
+    print(f"Saving vocab file: {output_vocab_file}")
+    np.save(output_vocab_file, tokens)
+
+def save_point_file(output_path, output_point_file, points):
+    """Saves the points to a file."""
+    if output_point_file is None:
+        output_point_file = output_path + "/processed-point.npy"
+    print(f"Saving point file: {output_point_file}")
+    np.save(output_point_file, points)
+
+def process_files(input_file, output_path, output_vocab_file=None, output_point_file=None):
+    """Main function to process input and save vocab and point files."""
+    tokens, points = read_json_file(input_file)
+
+    save_vocab_file(output_path, output_vocab_file, tokens)
+    save_point_file(output_path, output_point_file, points)
+
+    print("Written vocab file and point file")
+
 
 
 # Example usage
