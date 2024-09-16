@@ -1,10 +1,13 @@
 import os
+from warnings import catch_warnings
+
 import dill as pickle
 import numpy as np
 import logging
 import platform
 import sys
 from datetime import datetime
+import sklearn
 
 # Save clustering results (reusable for all clustering methods)
 def save_clustering_results(clustering, clusters, output_path, K, ref):
@@ -44,19 +47,23 @@ def load_data(point_file=None, vocab_file=None, num_points=100, num_dims=5, voca
     Returns:
         Tuple[np.ndarray, np.ndarray]: Points and vocabulary arrays.
     """
-    if point_file and vocab_file:
-        logging.info("Loading data from provided files.")
-        points = np.load(point_file)
-        vocab = np.load(vocab_file)
-    else:
-        logging.info("Generating synthetic data.")
-        points, vocab = generate_synthetic_data(num_points=num_points, num_dims=num_dims, vocab_size=vocab_size)
-        save_synthetic_data(points, vocab,
-                            point_file=os.path.join(output_path, 'synthetic_points.npy'),
-                            vocab_file=os.path.join(output_path, 'synthetic_vocab.npy'))
-    return points, vocab
+    try:
+        if point_file and vocab_file:
+            logging.info("Loading data from provided files.")
+            points = np.load(point_file)
+            vocab = np.load(vocab_file)
+        else:
+            logging.info("Generating synthetic data.")
+            points, vocab = generate_synthetic_data(num_points=num_points, num_dims=num_dims, vocab_size=vocab_size)
+            save_synthetic_data(points, vocab,
+                                point_file=os.path.join(output_path, 'synthetic_points.npy'),
+                                vocab_file=os.path.join(output_path, 'synthetic_vocab.npy'))
+        return points, vocab
+    except Exception as e:
+        logging.error(f"Error loading data: {e}")
+        return None, None
 
-# Generate synthetic data (reusable for any clustering method)
+    # Generate synthetic data (reusable for any clustering method)
 def generate_synthetic_data(num_points=100, num_dims=5, vocab_size=100):
     """
     Generates synthetic data points and vocabulary for clustering.
