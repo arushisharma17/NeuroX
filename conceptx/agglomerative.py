@@ -27,13 +27,14 @@ class AgglomerativeClusteringPipeline:
         linkage_matrix = linkage(data, method='ward')
         return linkage_matrix
 
-    def plot_dendrogram(self, linkage_matrix):
+    def plot_dendrogram(self, linkage_matrix,file_name):
         """Plot the dendrogram for the linkage matrix."""
         plt.figure(figsize=(10, 7))
         dendrogram(linkage_matrix)
         plt.title('Agglomerative Clustering Dendrogram')
         plt.xlabel('Sample index')
         plt.ylabel('Distance')
+        plt.savefig(f"{self.output_path}/{file_name}")
         plt.show()
 
     def save_clustering(self, clustering, clusters, ref=''):
@@ -60,7 +61,7 @@ def main():
 
     # Plot the dendrogram for visualization
     linkage_matrix = pipeline.create_linkage_matrix(points)
-    pipeline.plot_dendrogram(linkage_matrix)
+    pipeline.plot_dendrogram(linkage_matrix,'dendrogram.png')
 
 if __name__ == "__main__":
     main()
