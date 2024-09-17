@@ -240,15 +240,3 @@ def _create_multiclass_data(source_code_file_path: str, model_desc: str, class_f
 
     np.save(f"{output_prefix}_activations.npy", np.array(activations))
 
-
-def annotate_multiclass_data(tokens, activations, class_filters, output_prefix, balance_data=False):
-    words, labels, activations = _create_multiclass_data(tokens, activations, class_filters, balance_data=balance_data)
-
-    # Save the files
-    with open(f"{output_prefix}_words.txt", "w") as f:
-        f.write("\n".join(words))
-
-    with open(f"{output_prefix}_labels.txt", "w") as f:
-        f.write("\n".join(labels))
-
-    np.save(f"{output_prefix}_activations.npy", np.array(activations))
