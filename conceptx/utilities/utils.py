@@ -1,6 +1,4 @@
 import os
-from warnings import catch_warnings
-
 import dill as pickle
 import numpy as np
 import logging
