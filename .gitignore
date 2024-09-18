@@ -23,3 +23,6 @@ dist
 venv
 .venv
 docs/*.rst
+
+# Exclude IDE-specific settings
+.idea/
