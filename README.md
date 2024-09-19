@@ -10,7 +10,9 @@ git clone https://github.com/arushisharma17/NeuroX.git
 cd NeuroX
 ```
 
-### 2. For pronto users only: Set Up NeuroX on Pronto using micromamba
+### 2. Creating the environment 
+
+#### a. For pronto users only: Set Up NeuroX on Pronto using micromamba
 
 ```bash
 sbatch pronto_setup.sh /path/to/project/dir
@@ -19,7 +21,7 @@ Important: Please not that if you ran setup.sh while installing CodeConceptNet r
 
 For further information about pronto: [Pronto Documentation](https://research.it.iastate.edu/guides/pronto/getting_started/)
 
-### For other (non-pronto) users: Create a python virtual environment
+#### b. For other (non-pronto) users: Create a python virtual environment
 
 ```bash
 python3 -m venv neurox-env
@@ -32,15 +34,16 @@ pip install -e .
 
 There are two ways to do this.
 
-#### If you are on pronto: use interactive mode to run scripts. 
+#### a. If you are on pronto: use interactive mode to run scripts. 
 
 ```bash
 srun --time=01:00:00 --nodes=1 --cpus-per-task=8 --partition=gpu-interactive --gres=gpu:1 --pty /usr/bin/bash
 ```
 Now you can run the code that you normally put in your shell script here directly. You will need to activate the environment and load modules too. 
-[pronto Interactive Computing Guide](https://research.it.iastate.edu/guides/pronto/interactive_computing/)
+[Pronto Interactive Computing Guide](https://research.it.iastate.edu/guides/pronto/interactive_computing/)
 
-#### If you are not on pronto: can use following colab notebook as a reference. 
+#### b. If you are not on pronto: can use following colab notebook as a reference. 
+You can run code interactively in colab or on your own machine after setting up the environment. 
 
 Add link to notebook
 
