@@ -18,9 +18,9 @@ sbatch pronto_setup.sh /path/to/project/dir
 ```
 Important: Please not that if you ran setup.sh while installing CodeConceptNet repo, you do not need to install NeuroX again. The setup script already does that for you. It should be located at your $PROJECTDIR/ . Its an editable install, so you can cd into $PROJECTDIR/NeuroX and git pull to get latest changes. 
 
-### For other users: Create a python virtual environment
-```bash
+### For other (non-pronto) users: Create a python virtual environment
 
+```bash
 python3 -m venv neurox-env
 source neurox-env/bin/activate
 pip install --upgrade pip
