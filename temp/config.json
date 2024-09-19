@@ -1,0 +1,19 @@
+{
+  "paths": {
+    "project_dir":"/work/LAS/jannesar-lab/arushi/LatentConceptAnalysis",
+    "script_dir": "/path/to/scripts",
+    "input_path": "/NeuroX/temp/input_data",
+    "output_dir": "/NeuroX/temp/outputs"
+  },
+  "input": {
+    "input_file": "java.in",
+    "label_file": "java.label",
+    "dataset_name": "java"
+  },
+
+  "model": {
+    "name": "microsoft/codebert-base"
+  },
+  "layers": [0, 1, 2]
+}
+
