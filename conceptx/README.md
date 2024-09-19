@@ -1,5 +1,6 @@
+<img src="https://github.com/user-attachments/assets/e1a4db28-bb4f-4a44-a908-6437b555c754" alt="Overview" width="400"/>
+<!-- Link to overview image: https://docs.google.com/drawings/d/1K24l9K9m-CJ6qdF7HHaJ0cjkJ8Xqpfx7PYOxdMe8mK0/edit?usp=sharing -->
 
-![Overview](https://github.com/user-attachments/assets/e1a4db28-bb4f-4a44-a908-6437b555c754)
 
 
 ### ConceptX directory structure
