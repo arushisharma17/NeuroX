@@ -55,29 +55,38 @@ Add link to notebook
 /path/to/your/project_directory/
 └── NeuroX/
     └── temp/
-        └── outputs/
-            ├── <dataset1>/                # e.g., test, java, cuda
-            │   ├── <model1>/              # e.g., microsoft-codebert-base
-            │   │   └── Activations/
-            │   │       ├── layer0/
-            │   │       ├── layer1/
-            │   │       └── layerN/
-            │   └── <model2>/              # e.g., bert-base-cased
-            │       └── Activations/
-            │           ├── layer0/
-            │           ├── layer1/
-            │           └── layerN/
-            └── <dataset2>/                # e.g., cuda
-                ├── <model1>/
-                │   └── Activations/
-                │       ├── layer0/
-                │       ├── layer1/
-                │       └── layerN/
-                └── <model2>/
-                    └── Activations/
-                        ├── layer0/
-                        ├── layer1/
-                        └── layerN/
+        ├── config.json
+        ├── input_data/
+        │   ├── <dataset1>/                # e.g., test, java, cuda
+        │   │   └── <input files>          # e.g., test.in, test.label
+        │   ├── <dataset2>/                # e.g., cuda
+        │   │   └── <input files>          # e.g., cuda.in cuda.label
+        │   └── <dataset3>/                # e.g., java
+        │       └── <input files>          # e.g., java.in java.label 
+        ├── outputs/
+        │   ├── <dataset1>/                # e.g., test
+        │   │   ├── <model1>/              # e.g., microsoft-codebert-base
+        │   │   │   └── Activations/
+        │   │   │       ├── layer0/
+        │   │   │       ├── layer1/
+        │   │   │       └── layerN/
+        │   │   └── <model2>/              # e.g., bert-base-cased
+        │   │       └── Activations/
+        │   │           ├── layer0/
+        │   │           ├── layer1/
+        │   │           └── layerN/
+        │   └── <dataset2>/                # e.g., java
+        │       ├── <model1>/              # e.g., microsoft-codebert-base
+        │       │   └── Activations/
+        │       │       ├── layer0/
+        │       │       ├── layer1/
+        │       │       └── layerN/
+        │       └── <model2>/              # e.g., bert-base-cased
+        │           └── Activations/
+        │               ├── layer0/
+        │               ├── layer1/
+        │               └── layerN/
+        └── test_run_interactive.sh
 
 ```
 
