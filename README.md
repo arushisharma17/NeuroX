@@ -30,13 +30,15 @@ pip install --upgrade pip
 pip install -e .
 ```
 
-### 3. Explore functionality of this toolkit:
+### 3. Explore functionality of this toolkit: (For Testing and Educational Purposes)
 We have created a temp directory where we store all relevant files for testing purposes. 
 
 #### a. If you are on pronto: you can use interactive mode to run scripts. 
 
 ```bash
 srun --time=01:00:00 --nodes=1 --cpus-per-task=8 --partition=gpu-interactive --gres=gpu:1 --pty /usr/bin/bash
+cd temp/
+./test_run_interactive.sh /path/to/project/dir   #eg. /work/LAS/jannesar-lab/arushi/LatentConceptAnalysis
 ```
 Now you can run the code that you normally put in your shell script here directly. You will need to activate the environment and load modules too. 
 [Pronto Interactive Computing Guide](https://research.it.iastate.edu/guides/pronto/interactive_computing/)
@@ -47,7 +49,7 @@ You can run code interactively in colab or on your own machine after setting up 
 Add link to notebook
 
 
-### After running extract_Avtivations.py
+### After running extract_activations.py
 
 ```
 /path/to/your/project_directory/
