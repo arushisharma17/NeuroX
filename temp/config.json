@@ -2,13 +2,13 @@
   "paths": {
     "project_dir":"/work/LAS/jannesar-lab/arushi/LatentConceptAnalysis",
     "script_dir": "/path/to/scripts",
-    "input_path": "/NeuroX/temp/input_data",
-    "output_dir": "/NeuroX/temp/outputs"
+    "input_path": "/work/LAS/jannesar-lab/arushi/LatentConceptAnalysis/NeuroX/temp/input_data/test",
+    "output_dir": "/work/LAS/jannesar-lab/arushi/LatentConceptAnalysis/NeuroX/temp/outputs"
   },
   "input": {
-    "input_file": "java.in",
-    "label_file": "java.label",
-    "dataset_name": "java"
+    "input_file": "test.in",
+    "label_file": "test.label",
+    "dataset_name": "test"
   },
 
   "model": {

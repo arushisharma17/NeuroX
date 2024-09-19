@@ -2,7 +2,7 @@
 
 import os
 import argparse
-from neurox.data.extraction.transformers_extractor import extract_activations_from_model
+from neurox.data.extraction.transformers_extractor import extract_representations
 from utils import load_config  # Importing the load_config function from utils.py
 
 def create_activations_directory(output_dir, dataset_name, model_name, layer):
@@ -43,12 +43,12 @@ def extract_layerwise_activations(model_name, working_file, layer, activations_d
     
     # Extract activations directly using NeuroX
     print(f"Extracting layer-wise activations for layer {layer}...")
-    extract_activations_from_model(
+    extract_representations(
         model_name,  # Model to use for extraction
         working_file,  # Input sentence file
         output_file=activation_file,  # Output file where activations will be stored
         decompose_layers=True,  # Decompose layers flag
-        filter_layers=[layer],  # Specify the layer to extract
+        filter_layers=str(layer),  # Specify the layer to extract
         output_type="json"  # Save the activations as JSON
     )
     
@@ -68,7 +68,7 @@ def main(config):
     layers = config['layers']
 
     # Working file location
-    working_file = os.path.join(input_path, f"{input_file}.tok.sent_len")
+    working_file = os.path.join(input_path, f"{input_file}")
 
     for layer in layers:
         # Create the directory structure for the activations
@@ -76,7 +76,7 @@ def main(config):
 
         # Copy input file to the working directory inside activations directory
         input_file_path = os.path.join(input_path, input_file)
-        working_file_path = os.path.join(activations_dir, f"{input_file}.tok.sent_len")
+        working_file_path = os.path.join(activations_dir, f"{input_file}")
         if not os.path.exists(working_file_path):
             print(f"Copying input file to {working_file_path}...")
             os.system(f"cp {input_file_path} {working_file_path}")
