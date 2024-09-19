@@ -1,57 +1,33 @@
 # NeuroX Toolkit
 
-## Instructions for Pronto
-
-### 1. Clone and Set Up NeuroX
-module purge
-module load micromamba
-module load git
-
-First, clone the **NeuroX** repository and set up the environment for extracting activations.
+### 1. Clone NeuroX
 
 ```bash
-cd /work/LAS/jannesar-lab/arushi/LatentConceptAnalysis
-cd <your project dir>
+cd <your project dir>    #eg. cd /work/LAS/jannesar-lab/arushi/LatentConceptAnalysis
 
 # Clone the NeuroX repository
 git clone https://github.com/arushisharma17/NeuroX.git
 cd NeuroX
-
-# Initialize micromamba
-eval "$(micromamba shell hook --shell=bash)"
-
-# Create and activate the 'getactivations' environment from the NeuroX repository
-micromamba env create --name=env_activations
-
-# Activate the environment
-micromamba activate env_activations
-
-# Check if environment activation was successful and proceed with package installation
-if micromamba activate env_activations; then
-    echo "Environment 'env_activations' activated successfully."
-
-    # Install Hugging Face transformers package
-    python -m pip install git+https://github.com/huggingface/transformers
-
-    # Install NeuroX in editable mode
-    pip install -e .
-
-    # List installed packages to verify installation
-    echo "Listing installed packages in 'getactivations':"
-    micromamba list
-
-    # Deactivate environment after setup
-    micromamba deactivate
-else
-    echo "Failed to activate environment 'env_activations'."
-    exit 1
-fi
 ```
 
-## Environment Setup in Colab
 
-Add instructions
+### 2. For pronto users only: Set Up NeuroX on Pronto using micromamba
+```bash
+sbatch pronto_setup.sh /path/to/project/dir
+```
 
+### For other users: Create a python virtual environment
+```bash
+
+python3 -m venv neurox-env
+source neurox-env/bin/activate
+pip install --upgrade pip
+pip install -e .
+```
+
+### 3. Explore functionality of this toolkit in this colab notebook:
+
+Add link to notebook
 
 <p align="center">
   <img src="https://github.com/fdalvi/NeuroX/raw/master/docs/intro/logo.png" />
