@@ -1,6 +1,6 @@
 <img src="https://github.com/user-attachments/assets/e1a4db28-bb4f-4a44-a908-6437b555c754" alt="Overview" width="400"/>
 <!-- Link to overview image: https://docs.google.com/drawings/d/1K24l9K9m-CJ6qdF7HHaJ0cjkJ8Xqpfx7PYOxdMe8mK0/edit?usp=sharing -->
-<img src="https://github.com/user-attachments/assets/6a993b70-8163-4500-ab38-1b31324da6b6" alt="Second Image" width="400/>
+<img src="https://github.com/user-attachments/assets/6a993b70-8163-4500-ab38-1b31324da6b6" alt="Second Image" width="400"/>
 
 
 
