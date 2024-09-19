@@ -31,8 +31,7 @@ pip install -e .
 ```
 
 ### 3. Explore functionality of this toolkit:
-
-There are two ways to do this.
+We have created a temp directory where we store all relevant files for testing purposes. 
 
 #### a. If you are on pronto: use interactive mode to run scripts. 
 
@@ -46,6 +45,47 @@ Now you can run the code that you normally put in your shell script here directl
 You can run code interactively in colab or on your own machine after setting up the environment. 
 
 Add link to notebook
+
+
+### After running extract_Avtivations.py
+
+```
+/path/to/your/project_directory/
+└── NeuroX/
+    └── temp/
+        └── outputs/
+            ├── <dataset1>/                # e.g., test, java, cuda
+            │   ├── <model1>/              # e.g., microsoft-codebert-base
+            │   │   └── Activations/
+            │   │       ├── layer0/
+            │   │       ├── layer1/
+            │   │       └── layerN/
+            │   └── <model2>/              # e.g., bert-base-cased
+            │       └── Activations/
+            │           ├── layer0/
+            │           ├── layer1/
+            │           └── layerN/
+            └── <dataset2>/                # e.g., cuda
+                ├── <model1>/
+                │   └── Activations/
+                │       ├── layer0/
+                │       ├── layer1/
+                │       └── layerN/
+                └── <model2>/
+                    └── Activations/
+                        ├── layer0/
+                        ├── layer1/
+                        └── layerN/
+
+```
+
+
+
+
+
+
+
+
 
 
 <p align="center">
