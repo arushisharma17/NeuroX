@@ -33,7 +33,7 @@ pip install -e .
 ### 3. Explore functionality of this toolkit:
 We have created a temp directory where we store all relevant files for testing purposes. 
 
-#### a. If you are on pronto: use interactive mode to run scripts. 
+#### a. If you are on pronto: you can use interactive mode to run scripts. 
 
 ```bash
 srun --time=01:00:00 --nodes=1 --cpus-per-task=8 --partition=gpu-interactive --gres=gpu:1 --pty /usr/bin/bash
