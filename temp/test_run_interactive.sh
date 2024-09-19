@@ -16,6 +16,14 @@ fi
 
 cd $PROJECTDIR
 
+# Delete the contents of the outputs/ directory, but keep the directory itself
+if [ -d "$PROJECTDIR/NeuroX/temp/outputs" ]; then
+    echo "Deleting contents of outputs directory..."
+    rm -rf $PROJECTDIR/NeuroX/temp/outputs/*
+else
+    echo "Outputs directory does not exist. No need to delete."
+fi
+
 # Setup micromamba
 if [ ! -d "micromamba" ]; then
     echo "micromamba does not exist"
