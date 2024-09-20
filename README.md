@@ -37,19 +37,9 @@ source neurox-env/bin/activate
 # Upgrade pip
 pip install --upgrade pip
 
-# Install the package in editable mode
-# Use the appropriate option for your environment:
-# For CPU-only: pip install -e .[cpu]
-# For GPU: pip install -e .[gpu]
-# For Development dependencies: pip install -e .[dev]
-# To install both CPU and development dependencies: pip install -e .[cpu,dev]
-# To install both GPU and development dependencies: pip install -e .[gpu,dev]
-
-pip install -e .[cpu]  # Example: Replace [cpu] with the option you need
+pip install -e . #Installs package in editable mode
 
 ```
-
-These commands allow you to install the necessary dependencies based on your hardware (CPU or GPU) and include any additional tools for development as needed.
 
 
 ### 3. Explore functionality of this toolkit: (For Testing and Educational Purposes)
