@@ -33,6 +33,7 @@ setup(
         "svgwrite==1.4.1",
         "transformers>=4.12.0",  # Update transformers to a compatible version
         "tokenizers>=0.12.0",  # Ensure this is compatible
+        "torch>=2.0.0",
         "matplotlib>=3.7.1",
         "tqdm>=4.64.1",
         "seaborn==0.11.1",
@@ -40,12 +41,6 @@ setup(
     ],
     python_requires=">=3.6",
     extras_require={
-        "cpu": [
-            "torch==2.0.0+cpu",  # CPU-specific PyTorch version
-        ],
-        "gpu": [
-            "torch==2.0.0",  # GPU-specific PyTorch version
-        ],
         "dev": [
             "build==0.7.0",
             "pytest==7.0.1",
