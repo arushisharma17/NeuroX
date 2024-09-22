@@ -1,6 +1,6 @@
 # Production dependencies
-h5py==3.6.0
-imbalanced-learn==0.8.0
+h5py>=3.6.0
+imbalanced-learn>=0.8.0
 numpy>=1.21.0
 scikit-learn>=1.0
 scipy>=1.7.3
