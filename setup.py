@@ -1,3 +1,4 @@
+
 from setuptools import setup, find_packages
 
 # Read the contents of your README file
@@ -24,20 +25,21 @@ setup(
     ],
     packages=find_packages(where="."),
     install_requires=[
-        "h5py==3.6.0",
-        "imbalanced-learn==0.8.0",
+        "h5py>=3.6.0",
+        "imbalanced-learn>=0.8.0",
         "numpy>=1.21.0",
         "scikit-learn>=1.0",
         "scipy>=1.7.3",
         "seaborn==0.11.1",
         "svgwrite==1.4.1",
-        "transformers>=4.12.0",  # Update transformers to a compatible version
-        "tokenizers>=0.12.0",  # Ensure this is compatible
+        "transformers>=4.12.0",
+        "tokenizers>=0.12.0",
         "torch>=2.0.0",
         "matplotlib>=3.7.1",
         "tqdm>=4.64.1",
         "seaborn==0.11.1",
         "dill==0.3.4",
+        "memory_profiler>=0.60.0",
     ],
     python_requires=">=3.6",
     extras_require={
