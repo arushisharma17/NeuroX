@@ -12,6 +12,7 @@ torch>=2.0.0
 matplotlib>=3.7.1
 tqdm>=4.64.1
 dill==0.3.4
+memory_profiler>=0.60.0
 
 # Optional development dependencies
 build==0.7.0
