@@ -5,6 +5,13 @@ import neurox.data.loader as loader
 import re
 import numpy as np
 from collections import defaultdict
+
+from typing import List, Tuple
+from tree_sitter import Language, Parser
+import tree_sitter_java as tsjava
+import graphviz
+
+
 def createBinaryClassification(source_code_file_path:str,model_desc:str,binary_filter:Union[set,Pattern,callable])-> tuple[List[str], List[str], List[List[float]]]:
     """
         Given a list of tokens, their activations, and a binary_filter, create a binary labeled dataset.
@@ -31,7 +38,7 @@ def createBinaryClassification(source_code_file_path:str,model_desc:str,binary_f
         - A list of corresponding activation vectors
         
     """
-    binary_filter = _checkfilter(binary_filter)
+
     tokens = tok.gather_tokens(source_code_file_path)
     transformers_extractor.extract_representations(model_desc=model_desc, input_corpus=source_code_file_path,output_file="output.json")
     activations, _ = loader.load_activations("output.json")
@@ -71,21 +78,7 @@ def createBinaryClassification(source_code_file_path:str,model_desc:str,binary_f
     labels = ['positive'] * len(positive_class_words) + ['negative'] * len(negative_class_words)
     return (positive_class_words + negative_class_words, labels, positive_class_activations + negative_class_activations)
 
-def _checkfilter(binary_filter:Union[set,Pattern,callable]):
-    # Handle binary filter input (e.g., converting string input to regex or set)
-    if callable(binary_filter):
-        # Use the callable filter as is
-        pass
-    elif isinstance(binary_filter, str):
-        if binary_filter.startswith("re:"):
-            binary_filter = re.compile(binary_filter[3:])
-        elif binary_filter.startswith("set:"):
-            binary_filter = set(binary_filter[4:].split(","))
-        else:
-            raise NotImplementedError("String filter must start with 're:' for regex or 'set:' for a set of words.")
-    else:
-        raise TypeError("Filter must be a callable, or start with 're:' for regex, or 'set:' for a set of words.")
-    return binary_filter
+
 
 
 def createBinaryClassification(source_code_file_path:str,output_prefix:str,model_desc:str,binary_filter:Union[set,Pattern,callable]):
@@ -127,7 +120,7 @@ def createBinaryClassification(source_code_file_path:str,output_prefix:str,model
     
 def _create_multiclass_data(source_code_file_path: str, model_desc: str, class_filters: dict, balance_data = False) ->tuple[List[str], List[str], List[List[float]]]:
     """
-        Given a list of tokens, their activations, and a binary_filter, create multiclass labeled dataset.
+        Given a list of tokens, their activations, and a multi class filter, create multiclass labeled dataset.
         A multi class filter is a dict with sets, functions or patterns as keys which map to classes
         Parameters
         --------------
@@ -152,7 +145,7 @@ def _create_multiclass_data(source_code_file_path: str, model_desc: str, class_f
         Tuple[List[str], List[str], List[List[float]]]
         A tuple containing:
         - A list of words (tokens)
-        - A list of corresponding binary labels ("positive" or "negative")
+        - A list of corresponding multiclass labels 
         - A list of corresponding activation vectors
         
     """
@@ -227,7 +220,7 @@ def _create_multiclass_data(source_code_file_path: str, model_desc: str, class_f
     None
         The function saves the following files:
         - {output_prefix}_words.txt: A text file containing the words (tokens).
-        - {output_prefix}_labels.txt: A text file containing the binary labels.
+        - {output_prefix}_labels.txt: A text file containing the multiclass labels.
         - {output_prefix}_activations.npy: A numpy file containing the activations.
     """
     # Save the files
@@ -240,3 +233,239 @@ def _create_multiclass_data(source_code_file_path: str, model_desc: str, class_f
 
     np.save(f"{output_prefix}_activations.npy", np.array(activations))
 
+
+
+def extract_tokens_with_bio(node) -> Tuple[List[str], List[str]]:
+    """
+    Extracts tokens from the AST with BIO labeling.
+
+    Parameters
+    ----------
+    node : tree_sitter.Node
+        The root node of the AST.
+
+    Returns
+    -------
+    Tuple[List[str], List[str]]
+        - tokens: A list of tokens extracted from the AST.
+        - bio_labels: A list of BIO labels corresponding to each token.
+    """
+    tokens = []
+    bio_labels = []
+
+    def recurse_node(node, label_prefix=None):
+        if node.is_named:
+            token_text = node.text.decode('utf-8')
+            if label_prefix:
+                bio_labels.append(f"B-{label_prefix}")
+                tokens.append(token_text)
+            else:
+                bio_labels.append("O")
+                tokens.append(token_text)
+        for child in node.children:
+            if node.is_named:
+                child_label = label_prefix or node.type
+                if child.is_named and len(child.children) > 0:
+                    recurse_node(child, child_label)
+                else:
+                    child_text = child.text.decode('utf-8')
+                    if len(child_text.split()) > 1:
+                        bio_labels.append(f"B-{child_label}")
+                        tokens.append(child_text.split()[0])
+                        for part in child_text.split()[1:]:
+                            bio_labels.append(f"I-{child_label}")
+                            tokens.append(part)
+                    else:
+                        bio_labels.append(f"B-{child_label}")
+                        tokens.append(child_text)
+            else:
+                recurse_node(child)
+
+    recurse_node(node)
+    return tokens, bio_labels
+
+
+def create_bio_labeled_dataset(source_code: bytes, model_desc: str) -> Tuple[List[str], List[str]]:
+    """
+    Create BIO labeled dataset from source code.
+
+    Parameters
+    ----------
+    source_code : bytes
+        Source code to be parsed for BIO labeling.
+    model_desc : str
+        Description of the model used for token representation.
+
+    Returns
+    -------
+    Tuple[List[str], List[str]]
+        - A list of tokens.
+        - A list of BIO labels corresponding to the tokens.
+    """
+    JAVA_LANGUAGE = Language(tsjava.language())
+    parser = Parser(JAVA_LANGUAGE)
+    tree = parser.parse(source_code)
+    root_node = tree.root_node
+    tokens, bio_labels = extract_tokens_with_bio(root_node)
+    
+    # Simulated activations (in a real case, this would come from a model)
+    activations = np.random.rand(len(tokens), 3).tolist()
+
+    return tokens, bio_labels, activations
+
+
+def save_bio_dataset(output_prefix: str, tokens: List[str], bio_labels: List[str], activations: List[List[float]]):
+    """
+    Save BIO labeled tokens, labels, and activations to files.
+
+    Parameters
+    ----------
+    output_prefix : str
+        Prefix for the output files.
+    tokens : List[str]
+        Tokens extracted from the source code.
+    bio_labels : List[str]
+        BIO labels corresponding to the tokens.
+    activations : List[List[float]]
+        Activation vectors corresponding to the tokens.
+    """
+    with open(f"{output_prefix}_tokens.txt", "w") as f:
+        f.write("\n".join(tokens))
+
+    with open(f"{output_prefix}_bio_labels.txt", "w") as f:
+        f.write("\n".join(bio_labels))
+
+    np.save(f"{output_prefix}_activations.npy", np.array(activations))
+
+
+# Example usage
+tokens, bio_labels, activations = create_bio_labeled_dataset(source_code, "bert-base-uncased")
+save_bio_dataset("java_output", tokens, bio_labels, activations)
+
+
+def extract_tokens_with_positional_bio_levels(node) -> Tuple[List[str], List[List[str]]]:
+    """
+    Extracts tokens from the AST and generates positional BIO labels for all levels.
+    
+    Parameters
+    ----------
+    node : tree_sitter.Node
+        The root node of the AST.
+
+    Returns
+    -------
+    Tuple[List[str], List[List[str]]]
+        - tokens: A list of tokens extracted from the AST.
+        - bio_labels_levels: A list of lists where each inner list contains the positional BIO labels for a specific iteration/level.
+    """
+    tokens = []
+    bio_labels_levels = []
+
+    def recurse(node, current_label=None, level=0):
+        if len(bio_labels_levels) <= level:
+            bio_labels_levels.append([])
+
+        if node.is_named:
+            token_text = node.text.decode('utf-8')
+            token_list = re.findall(r'\w+|[^\s\w]', token_text)  # Splits into words and symbols
+
+            for i, token in enumerate(token_list):
+                if level == 0:
+                    tokens.append(token)
+                if i == 0:
+                    bio_labels_levels[level].append(f"B-{current_label}" if current_label else "O")
+                else:
+                    bio_labels_levels[level].append(f"I-{current_label}" if current_label else "O")
+
+        for child in node.children:
+            if node.is_named:
+                recurse(child, node.type, level + 1)
+            else:
+                recurse(child, current_label, level)
+
+    recurse(node)
+
+    # Ensure all lists have the same length by filling with "O" labels
+    max_length = len(tokens)
+    for labels in bio_labels_levels:
+        while len(labels) < max_length:
+            labels.append("O")
+
+    return tokens, bio_labels_levels
+
+
+def build_cfg(node, graph=None, parent_id=None) -> List[Tuple[str, str]]:
+    """
+    Builds a Control Flow Graph (CFG) and optionally visualizes it using Graphviz.
+
+    Parameters
+    ----------
+    node : tree_sitter.Node
+        The root node of the AST.
+    graph : graphviz.Digraph, optional
+        Graph object to visualize the control flow.
+    parent_id : str, optional
+        Parent node ID, used for connecting edges.
+
+    Returns
+    -------
+    List[Tuple[str, str]]
+        A list of edges representing the control flow.
+    """
+    edges = []
+    node_id = str(id(node))
+
+    if graph is not None:
+        label = f"{node.type} [{node.start_point}-{node.end_point}]"
+        graph.node(node_id, label)
+        if parent_id:
+            graph.edge(parent_id, node_id)
+
+    if node.type in ["if_statement", "while_statement", "for_statement"]:
+        for child in node.children:
+            child_id = str(id(child))
+            edges.append((node_id, child_id))
+            edges.extend(build_cfg(child, graph, node_id))
+    else:
+        for child in node.children:
+            edges.extend(build_cfg(child, graph, parent_id))
+
+    return edges
+
+
+def visualize_ast(node, graph=None, parent_id=None):
+    """
+    Visualizes the Abstract Syntax Tree (AST) using Graphviz.
+
+    Parameters
+    ----------
+    node : tree_sitter.Node
+        The root node of the AST.
+    graph : graphviz.Digraph, optional
+        The Graphviz Digraph object used to visualize the AST.
+    parent_id : str, optional
+        The ID of the parent node, used to create edges between nodes.
+    """
+    node_id = str(id(node))
+    label = f"{node.type} [{node.start_point}-{node.end_point}]"
+    graph.node(node_id, label)
+    if parent_id:
+        graph.edge(parent_id, node_id)
+    for child in node.children:
+        visualize_ast(child, graph, node_id)
+
+
+# Extract tokens and positional BIO levels
+tokens, bio_labels_levels = extract_tokens_with_positional_bio_levels(root_node)
+print(f"Tokens: {tokens}")
+print(f"BIO Labels at All Levels: {bio_labels_levels}")
+
+# Create and visualize the Control Flow Graph (CFG)
+cfg_graph = graphviz.Digraph(format="png")
+cfg_edges = build_cfg(root_node, cfg_graph)
+cfg_graph.render("java_cfg")
+
+# Visualize the AST using Graphviz
+ast_graph = graphviz.Digraph(format="png")
+visualize_ast(root_node, ast_graph)
+ast_graph.render("java_ast")
