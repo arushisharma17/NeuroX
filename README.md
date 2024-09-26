@@ -1,22 +1,20 @@
 # NeuroX Toolkit
 ## Manual Editable Install
 
-### 1. Create a python virtual environment
-
 ```bash
+# 1. Create a python virtual environment
 cd <your project dir>    #eg. cd /work/LAS/jannesar-lab/arushi/LatentConceptAnalysis
 python3 -m venv neurox-env
 source neurox-env/bin/activate
 pip install --upgrade pip
-```
 
-### 2. Clone neurox
-```bash
+# 2. Clone neurox
 git clone https://github.com/arushisharma17/NeuroX.git 
 cd NeuroX
 pip install -e . #Installs package in editable mode
 ```
-### 3. Explore functionality of this toolkit: (For Testing and Educational Purposes)
+
+### Explore functionality of this toolkit: (For Testing and Educational Purposes)
 We have created a temp directory where we store all relevant files for testing purposes. 
 
 #### a. Pronto: You can use interactive mode to run/test scripts. 
