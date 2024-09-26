@@ -26,3 +26,5 @@ docs/*.rst
 
 # Exclude IDE-specific settings
 .idea/
+
+neurox-env/
