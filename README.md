@@ -26,6 +26,7 @@ srun --time=01:00:00 --nodes=1 --cpus-per-task=8 --partition=gpu-interactive --g
 cd temp/
 ./test_run_interactive.sh /path/to/project/dir   #eg. /work/LAS/jannesar-lab/arushi/LatentConceptAnalysis
 ```
+TODO: Update test_run_interactive.sh to work with python virutal env instead of micromamba
 
 #### b. Example Colab Notebook
 You can run code interactively in colab or on your own machine after setting up the environment. 
