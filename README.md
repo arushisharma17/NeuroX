@@ -2,16 +2,23 @@
 ## Manual Editable Install
 
 ```bash
+# 0. Set Up
+  module spider python
+  module load python/3.11.9-i2aasx
+
 # 1. Create a python virtual environment
-cd <your project dir>    #eg. cd /work/LAS/jannesar-lab/arushi/LatentConceptAnalysis
-python3 -m venv neurox-env
-source neurox-env/bin/activate
-pip install --upgrade pip
+  cd <your project dir>    #eg. cd /work/LAS/jannesar-lab/arushi/LatentConceptAnalysis
+  python3 -m venv neurox-env
+  cd neurox-env
 
 # 2. Clone neurox
-git clone https://github.com/arushisharma17/NeuroX.git 
-cd NeuroX
-pip install -e . #Installs package in editable mode
+  git clone https://github.com/arushisharma17/NeuroX.git 
+  cd NeuroX
+
+# 3. pip install
+  source neurox-env/bin/activate
+  pip install --upgrade pip
+  pip install -e . #Installs package in editable mode
 ```
 
 ### Explore functionality of this toolkit: (For Testing and Educational Purposes)
