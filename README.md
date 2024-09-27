@@ -1,55 +1,46 @@
 # NeuroX Toolkit
-
-### 1. Clone NeuroX
-
-```bash
-cd <your project dir>    #eg. cd /work/LAS/jannesar-lab/arushi/LatentConceptAnalysis
-
-# Clone the NeuroX repository
-git clone https://github.com/arushisharma17/NeuroX.git
-cd NeuroX
-```
-
-### 2. Creating the environment 
-
-#### a. For pronto users only: Set Up NeuroX on Pronto using micromamba
+## Manual Editable Install
 
 ```bash
-sbatch pronto_setup.sh /path/to/project/dir
+# 0. Set Up
+  module spider python
+  module load python/3.11.9-i2aasx
+
+# 1. Create a python virtual environment
+  cd <your project dir>    #eg. cd /work/LAS/jannesar-lab/arushi/LatentConceptAnalysis
+  python3 -m venv neurox-env
+  cd neurox-env
+
+# 2. Clone neurox
+  git clone https://github.com/arushisharma17/NeuroX.git 
+  cd NeuroX
+
+# 3. pip install
+  source neurox-env/bin/activate
+  pip install --upgrade pip
+  pip install -e . #Installs package in editable mode
 ```
-Important: Please not that if you ran setup.sh while installing CodeConceptNet repo, you do not need to install NeuroX again. The setup script already does that for you. It should be located at your $PROJECTDIR/ . Its an editable install, so you can cd into $PROJECTDIR/NeuroX and git pull to get latest changes. 
 
-For further information about pronto: [Pronto Documentation](https://research.it.iastate.edu/guides/pronto/getting_started/)
-
-#### b. For other (non-pronto) users: Create a python virtual environment
-
-```bash
-python3 -m venv neurox-env
-source neurox-env/bin/activate
-pip install --upgrade pip
-pip install -e .
-```
-
-### 3. Explore functionality of this toolkit: (For Testing and Educational Purposes)
+### Explore functionality of this toolkit: (For Testing and Educational Purposes)
 We have created a temp directory where we store all relevant files for testing purposes. 
 
-#### a. If you are on pronto: you can use interactive mode to run scripts. 
-
+#### a. Pronto: You can use interactive mode to run/test scripts. 
+[Pronto Interactive Computing Guide](https://research.it.iastate.edu/guides/pronto/interactive_computing/)
 ```bash
 srun --time=01:00:00 --nodes=1 --cpus-per-task=8 --partition=gpu-interactive --gres=gpu:1 --pty /usr/bin/bash
 cd temp/
 ./test_run_interactive.sh /path/to/project/dir   #eg. /work/LAS/jannesar-lab/arushi/LatentConceptAnalysis
 ```
-Now you can run the code that you normally put in your shell script here directly. You will need to activate the environment and load modules too. 
-[Pronto Interactive Computing Guide](https://research.it.iastate.edu/guides/pronto/interactive_computing/)
+TODO: Update test_run_interactive.sh to work with python virutal env instead of micromamba
 
-#### b. If you are not on pronto: can use following colab notebook as a reference. 
+#### b. Example Colab Notebook
 You can run code interactively in colab or on your own machine after setting up the environment. 
 
-Add link to notebook
+[Link to notebook](https://colab.research.google.com/drive/17e5Vt_LM_8qA_cyb_Ci5MYLOxvGE9-Wz#scrollTo=KGhSheWltrTy)
 
 
 ### After running extract_activations.py
+You should see the following directory structure. 
 
 ```
 /path/to/your/project_directory/
