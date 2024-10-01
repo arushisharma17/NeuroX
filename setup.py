@@ -40,6 +40,7 @@ setup(
         "seaborn==0.11.1",
         "dill==0.3.4",
         "memory_profiler>=0.60.0",
+        "pandas>=1.3.0",
     ],
     python_requires=">=3.6",
     extras_require={
