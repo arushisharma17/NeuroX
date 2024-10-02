@@ -4,14 +4,13 @@ This document outlines the workflow for extracting neural network activations an
 
 ## Workflow Overview
 
-run_extraction_and_clustering.sh
-│
-├─ test_run_interactive.sh
-│  └─ extract_activations.py
-│
-├─ process_and_cluster.py
-└─ get_clusters.py
+![Clustering Workflow](flow_clustering.png)
 
+This diagram illustrates the structure of our scripts and their relationships:
+
+- `run_extraction_and_clustering.sh` is the main script that orchestrates the process.
+- It calls `test_run_interactive.sh`, which in turn runs `extract_activations.py` to extract the activations.
+- Then it calls `process_and_cluster.py`, which uses `get_clusters.py` to perform the clustering operations.
 
 ## Script Descriptions
 
