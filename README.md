@@ -1,5 +1,8 @@
 # NeuroX Toolkit
 
+![NeuroX-Workflow](https://github.com/user-attachments/assets/1617c5b0-5a72-4106-9c6b-94c0c8097fef)
+
+
 ### 1. Clone NeuroX
 
 ```bash
