@@ -2,7 +2,9 @@
 
 ![NeuroX-Workflow](https://github.com/user-attachments/assets/1617c5b0-5a72-4106-9c6b-94c0c8097fef)
 
-![Alignment](https://github.com/user-attachments/assets/7588c536-5cba-40e2-847b-0693647552f2)
+## Alignment Overview
+
+![Alignment](https://github.com/user-attachments/assets/025ec0c8-8844-457a-ae6f-9287c1716bc0)
 
 
 ### 1. Clone NeuroX
