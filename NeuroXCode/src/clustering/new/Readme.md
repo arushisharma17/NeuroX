@@ -5,17 +5,11 @@ This document outlines the workflow for extracting neural network activations an
 ## Workflow Overview
 
 run_extraction_and_clustering.sh
-
 │
-
 ├─ test_run_interactive.sh
-
 │  └─ extract_activations.py
-
 │
-
 ├─ process_and_cluster.py
-
 └─ get_clusters.py
 
 
