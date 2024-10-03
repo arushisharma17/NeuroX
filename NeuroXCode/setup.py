@@ -22,28 +22,34 @@ setup(
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
     ],
-    packages=find_packages(where="."),
+    packages=find_packages(where="src"),  # Ensures all modules in src/ are included
+    package_dir={"": "src"},  # Defines src/ as the root for the package
+    python_requires=">=3.10",
     install_requires=[
-        "h5py==3.6.0",
         "imbalanced-learn==0.8.0",
         "numpy>=1.21.0",
         "scikit-learn>=1.0",
         "scipy>=1.7.3",
         "seaborn==0.11.1",
         "svgwrite==1.4.1",
-        "transformers>=4.12.0",  # Update transformers to a compatible version
-        "tokenizers>=0.12.0",  # Ensure this is compatible
+        "transformers>=4.12.0",
+        "tokenizers>=0.12.0",
         "torch>=2.0.0",
         "matplotlib>=3.7.1",
         "tqdm>=4.64.1",
-        "seaborn==0.11.1",
         "dill==0.3.4",
         "build==0.7.0",
         "pytest==7.0.1",
         "pytest-cov==3.0.0",
         "sphinx==4.4.0",
         "sphinx-book-theme==0.2.0",
-        "ufmt==1.3.2"
+        "ufmt==1.3.2",
+        "tree_sitter",
     ],
-    python_requires=">=3.10",    
+    entry_points={
+        'console_scripts': [
+            'neuroxcode=neuroxcode.__main__:main',
+        ],
+    },
+    include_package_data=True,
 )
