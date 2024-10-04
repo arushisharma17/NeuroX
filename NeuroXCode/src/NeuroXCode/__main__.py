@@ -1,5 +1,3 @@
-# src/__main__.py
-
 import argparse
 from . import extract_activations, process_activations
 from .src.algorithms.clustering import AgglomerativeClustering, KMeansClustering, LeadersClustering

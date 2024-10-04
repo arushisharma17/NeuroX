@@ -1,7 +1,7 @@
 import os
 import argparse
-from neurox.data.extraction.transformers_extractor import extract_representations
-from utils import load_config  # Importing the load_config function from utils.py
+from ..data.extraction.transformers_extractor import extract_representations
+from .utils import load_config
 
 def create_activations_directory(output_dir, dataset_name, model_name):
     """

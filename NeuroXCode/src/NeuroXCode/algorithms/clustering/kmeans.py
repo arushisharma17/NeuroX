@@ -1,5 +1,5 @@
 from sklearn.cluster import KMeans
-from conceptx.utilities.utils import load_data, save_clustering_results, log_clustering_process
+from ...utilities.utils import load_data, save_clustering_results, log_clustering_process
 import time
 
 class KMeansClusteringPipeline:
