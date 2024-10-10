@@ -4,7 +4,7 @@ This module idelly provides functionality for extracting activations,
 processing data, and performing clustering on neural network representations.
 """
 
-from .extract_activations import main as extract_activations
+from .archive.extract_activations import main as extract_activations
 from .process_and_cluster import main as process_and_cluster
 from .get_clusters import run_clustering
 

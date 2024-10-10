@@ -1,6 +1,7 @@
 import os
 import argparse
-from .extract_activations import main as extract_activations
+# from .extract_activations import main as extract_activations
+from ..process_activations.extract_activations import main as extract_activations
 
 def setup_environment(project_dir):
     os.environ['PROJECTDIR'] = project_dir

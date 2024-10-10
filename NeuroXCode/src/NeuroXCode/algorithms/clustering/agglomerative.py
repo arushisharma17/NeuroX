@@ -2,7 +2,7 @@ import os
 import numpy as np
 from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
 import matplotlib.pyplot as plt
-from conceptx.utilities.utils import load_data, save_clustering_results, generate_synthetic_data
+from ...utilities.utils import load_data, save_clustering_results, generate_synthetic_data
 
 class AgglomerativeClusteringPipeline:
     def __init__(self, output_path='./output', num_clusters=5):
@@ -45,7 +45,7 @@ class AgglomerativeClusteringPipeline:
 def main():
     # Initialize the pipeline with default parameters
     pipeline = AgglomerativeClusteringPipeline(output_path='./output', num_clusters=5)
-    # Load or generate synthetic data
+    # Load Data or generate synthetic data
     points, vocab = pipeline.load_and_prepare_data(num_points=10, num_dims=3, vocab_size=10)
     # Run the clustering pipeline
     labels, clusters = pipeline.run_pipeline(points, vocab)
