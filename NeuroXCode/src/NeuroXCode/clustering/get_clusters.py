@@ -19,9 +19,9 @@ python get_clusters.py /path/to/project 1 50 --agglomerative --kmeans --leaders 
 import argparse
 import os
 import sys
-from ..algorithms.clustering.agglomerative import AgglomerativeClusteringPipeline
-from ..algorithms.clustering.kmeans import KMeansClusteringPipeline
-from ..algorithms.clustering.leaders import LeadersClusteringPipeline
+from NeuroXCode.algorithms.clustering.agglomerative import AgglomerativeClusteringPipeline
+from NeuroXCode.algorithms.clustering.kmeans import KMeansClusteringPipeline
+from NeuroXCode.algorithms.clustering.leaders import LeadersClusteringPipeline
 import numpy as np
 
 def run_clustering(project_dir, layer, clusters, clustering_methods, tau=None):

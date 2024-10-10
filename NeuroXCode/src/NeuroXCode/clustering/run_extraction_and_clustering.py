@@ -1,6 +1,6 @@
 import argparse
 import os
-from ..process_activations.extract_activations import main as extract_activations
+from NeuroXCode.process_activations.extract_activations import main as extract_activations
 from .process_and_cluster import main as process_and_cluster
 
 def main():
