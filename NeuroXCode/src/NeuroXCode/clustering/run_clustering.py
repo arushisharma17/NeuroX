@@ -10,7 +10,9 @@ import sys
 from .get_clusters import run_clustering
 
 def check_activation_files(project_dir, layer):
-    base_path = os.path.join(project_dir, 'CodeConceptNet', 'clusters', f'java_test/test_layer{layer}', 'activations')
+    # layer not realy used in the new approach, but keeping it incase we revert to the old approach
+    # base_path = os.path.join(project_dir, 'CodeConceptNet', 'clusters', f'java_test/test_layer{layer}', 'activations')
+    base_path = project_dir
     point_file = os.path.join(base_path, 'processed-point.npy')
     vocab_file = os.path.join(base_path, 'processed-vocab.npy')
     

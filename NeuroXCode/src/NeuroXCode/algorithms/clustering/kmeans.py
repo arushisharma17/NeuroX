@@ -3,7 +3,8 @@ from ...utilities.utils import load_data, save_clustering_results, log_clusterin
 import time
 
 class KMeansClusteringPipeline:
-    def __init__(self, num_clusters=5):
+    def __init__(self, output_path='./output', num_clusters=5):
+        self.output_path = output_path
         self.num_clusters = num_clusters
 
     @staticmethod
@@ -30,6 +31,9 @@ class KMeansClusteringPipeline:
                     for i in range(self.num_clusters)}
 
         end_time = time.time()
+
+        # Save clustering results
+        save_clustering_results(clustering.labels_, clusters, self.output_path, self.num_clusters)
 
         # Return the clustering and the cluster assignments
         return clustering, clusters, end_time - start_time

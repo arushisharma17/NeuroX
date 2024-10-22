@@ -55,3 +55,7 @@ neuroxcode run_clustering /path/to/project 1 50 --agglomerative --kmeans
 
 - If clustering fails, verify that the activation files exist in the expected location.
 - For memory issues, consider reducing the number of clusters or implementing batch processing.
+
+
+## Output 
+- Output for each clustering algorithm is stored under the project_dir/<clustering_method> where project_dir is given by the user as a CLI Arguement 
