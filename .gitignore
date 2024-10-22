@@ -23,6 +23,7 @@ dist
 venv
 .venv
 docs/*.rst
+neurox-env
 
 # Exclude IDE-specific settings
 .idea/
