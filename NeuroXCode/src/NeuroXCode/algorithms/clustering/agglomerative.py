@@ -2,7 +2,7 @@ import os
 import numpy as np
 from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
 import matplotlib.pyplot as plt
-from ...utilities.utils import load_data, save_clustering_results, generate_synthetic_data
+from NeuroXCode.utilities.utils import load_data, save_clustering_results, generate_synthetic_data
 
 class AgglomerativeClusteringPipeline:
     def __init__(self, output_path='./output', num_clusters=5):

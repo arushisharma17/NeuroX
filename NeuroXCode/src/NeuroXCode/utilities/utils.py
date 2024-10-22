@@ -10,7 +10,7 @@ from datetime import datetime
 import sklearn
 
 # Save clustering results (reusable for all clustering methods)
-def save_clustering_results(clustering, clusters, output_path, K, ref):
+def save_clustering_results(clustering, clusters, output_path, K, ref = ''):
     """
     Saves the results of the clustering including the model and the cluster assignments.
 

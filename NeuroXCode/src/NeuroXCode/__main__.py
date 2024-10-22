@@ -1,6 +1,6 @@
 import argparse
-from . import extract_activations, process_activations
-from .clustering import run_clustering
+# from . import extract_activations, process_activations
+# from .clustering import run_clustering
 
 def main():
     parser = argparse.ArgumentParser(description="NeuroXCode Command-Line Interface")
@@ -27,14 +27,17 @@ def main():
 
     # Extract activations command
     if args.command == "extract_activations":
+        from . import extract_activations
         extract_activations(args.model, args.input, args.output, layers=args.layers)
 
     # Process activations command
     elif args.command == "process_activations":
+        from . import process_activations
         process_activations()
     
     # Clustering command
     elif args.command == "run_clustering":
+        from .clustering import run_clustering
         run_clustering(
             args.project_dir,
             args.layer,
