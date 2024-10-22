@@ -2,6 +2,8 @@ import argparse
 import csv
 import json
 import time
+import os
+import numpy as np
 from collections import Counter
 from typing import Dict, List, Tuple
 
@@ -30,7 +32,26 @@ def load_clusters(cluster_file):
             clusters.append((word, word_frequency, sentence_index, word_index, cluster_id))
 
     return clusters
-    
+
+def load_activations(activation_file):
+    with open(activation_file, 'r') as f:
+        activations = [json.loads(line) for line in f]
+    return activations
+
+def process_activations(activations, sentences):
+    processed_activations = []
+    skipped_count = 0
+    for act, sent in zip(activations, sentences):
+        tokens = sent.split()
+        features = act['features']
+        if len(tokens) != len(features):
+            print(f"Warning: Mismatch in token count for sentence: {sent}")
+            skipped_count += 1
+            continue
+        processed_activations.append([feature['layers'][0]['values'] for feature in features])
+    print(f"Total sentences skipped due to token mismatch: {skipped_count}")
+    return processed_activations
+
 def filter_label_map(label_map):
     filtered_label_map = {}
     unique_labels = set()
@@ -66,7 +87,7 @@ def extract_words_items(cluster_words):
     word_items = [item[0] for item in cluster_words]
     return word_items
 
-def assign_labels_to_clusters_2(label_map, clusters, threshold):
+def assign_labels_to_clusters_2(label_map, clusters, threshold, activations):
     assigned_clusters = {}
     g_c = group_clusters(clusters)
 
@@ -104,8 +125,7 @@ def create_label_map(sentences, labels):
 
     return label_map, unique_labels
 
-
-def assign_labels_to_clusters(label_map, clusters, threshold):
+def assign_labels_to_clusters(label_map, clusters, threshold, activations):
     assigned_clusters = {}
     assigned_cluster_count = 0
 
@@ -132,7 +152,7 @@ def assign_labels_to_clusters(label_map, clusters, threshold):
         else:
             assigned_clusters[cluster_id] = "NONE"
 
-    return assigned_clusters, len(assigned_clusters)  # This will always be 500
+    return assigned_clusters, len(assigned_clusters)
 
 def group_clusters(clusters):
     cluster_groups = {}
@@ -202,50 +222,72 @@ def main():
     parser.add_argument("--sentence-file", required=True, help="Path to the sentence file")
     parser.add_argument("--label-file", required=True, help="Path to the label file")
     parser.add_argument("--cluster-file", required=True, help="Path to the cluster file")
+    parser.add_argument("--activation-dir", required=True, help="Directory containing activation files for different layers")
     parser.add_argument("--thresholds", nargs='+', required=True, help="Alignment thresholds (e.g., 50 60 70)")
     parser.add_argument("--methods", nargs='+', required=True, help="Methods to compare (e.g., M1 M2)")
+    parser.add_argument("--output-dir", required=True, help="Directory to save output files")
 
     args = parser.parse_args()
 
     sentences, labels = load_sentences_and_labels(args.sentence_file, args.label_file)
     clusters = load_clusters(args.cluster_file)
 
-    results = []
-    all_results = {}
+    # Get all layer directories
+    layer_dirs = [d for d in os.listdir(args.activation_dir) if d.startswith("layer")]
+    
+    for layer_dir in sorted(layer_dirs, key=lambda x: int(x[5:])):
+        layer = layer_dir[5:]  # Extract layer number
+        print(f"\nProcessing {layer_dir}")
+        
+        activation_file = os.path.join(args.activation_dir, layer_dir, f"activations-{layer_dir}.json")
+        if not os.path.exists(activation_file):
+            print(f"No activation file found for {layer_dir}. Skipping.")
+            continue
 
-    for method in args.methods:
-        for threshold in args.thresholds:
-            print(f"\nRunning with method: {method}, threshold: {threshold}")
-            if method == "M1":
-                label_map, unique_labels = create_label_map(sentences, labels)
-                assigned_clusters, assigned_cluster_count = assign_labels_to_clusters(label_map, clusters, int(threshold) / 100)
-            elif method == "M2":
-                label_map, unique_labels = create_label_map_2(sentences, labels)
-                assigned_clusters, assigned_cluster_count = assign_labels_to_clusters_2(label_map, clusters, int(threshold) / 100)
-            
-            all_results[f"{method}_{threshold}"] = assigned_clusters
-            
-            non_none_clusters = sum(1 for label in assigned_clusters.values() if label != "NONE")
-            print(f"Number of non-NONE clusters: {non_none_clusters}")
-            print(f"Number of clusters successfully assigned a label including NONE: {assigned_cluster_count}")
-            results.append(analyze_clusters(assigned_clusters, unique_labels, assigned_cluster_count, threshold, method))
+        activations = load_activations(activation_file)
+        processed_activations = process_activations(activations, sentences)
 
-    # Write all results to a single JSON file
-    with open('assigned_labels_all_methods_thresholds.json', 'w') as f:
-        json.dump(all_results, f, indent=2)
+        results = []
+        all_results = {}
 
-    final_report = generate_final_report(results)
+        for method in args.methods:
+            for threshold in args.thresholds:
+                print(f"\nRunning with method: {method}, threshold: {threshold}")
+                if method == "M1":
+                    label_map, unique_labels = create_label_map(sentences, labels)
+                    assigned_clusters, assigned_cluster_count = assign_labels_to_clusters(label_map, clusters, int(threshold) / 100, processed_activations)
+                elif method == "M2":
+                    label_map, unique_labels = create_label_map_2(sentences, labels)
+                    assigned_clusters, assigned_cluster_count = assign_labels_to_clusters_2(label_map, clusters, int(threshold) / 100, processed_activations)
+                
+                all_results[f"{method}_{threshold}"] = assigned_clusters
+                
+                non_none_clusters = sum(1 for label in assigned_clusters.values() if label != "NONE")
+                print(f"Number of non-NONE clusters: {non_none_clusters}")
+                print(f"Number of clusters successfully assigned a label including NONE: {assigned_cluster_count}")
+                results.append(analyze_clusters(assigned_clusters, unique_labels, assigned_cluster_count, threshold, method))
 
-    # Write the final report to a CSV file
-    with open('analysis_results.csv', mode='w', newline='') as csv_file:
-        writer = csv.DictWriter(csv_file, fieldnames=final_report.keys())
-        writer.writeheader()
-        for i in range(len(final_report['Metric'])):
-            row = {key: final_report[key][i] for key in final_report.keys()}
-            writer.writerow(row)
+        # Write results for this layer
+        output_dir = os.path.join(args.output_dir, layer_dir)
+        os.makedirs(output_dir, exist_ok=True)
+        
+        assigned_labels_file = os.path.join(output_dir, f"assigned_labels_all_methods_thresholds.json")
+        with open(assigned_labels_file, 'w') as f:
+            json.dump(all_results, f, indent=2)
 
-    print("Final report has been generated and saved to 'analysis_results.csv'")
-    print("Assigned labels for all methods and thresholds have been saved to 'assigned_labels_all_methods_thresholds.json'")
+        final_report = generate_final_report(results)
+
+        # Write the final report to a CSV file
+        analysis_results_file = os.path.join(output_dir, f"analysis_results.csv")
+        with open(analysis_results_file, mode='w', newline='') as csv_file:
+            writer = csv.DictWriter(csv_file, fieldnames=final_report.keys())
+            writer.writeheader()
+            for i in range(len(final_report['Metric'])):
+                row = {key: final_report[key][i] for key in final_report.keys()}
+                writer.writerow(row)
+
+        print(f"Final report for {layer_dir} has been generated and saved to '{analysis_results_file}'")
+        print(f"Assigned labels for all methods and thresholds for {layer_dir} have been saved to '{assigned_labels_file}'")
 
     end_time = time.time()
     print(f"Total runtime: {end_time - start_time:.2f} seconds")
