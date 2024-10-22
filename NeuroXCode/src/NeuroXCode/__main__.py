@@ -1,6 +1,6 @@
 import argparse
 from . import extract_activations, process_activations
-from .src.algorithms.clustering import AgglomerativeClustering, KMeansClustering, LeadersClustering
+from .clustering import run_clustering
 
 def main():
     parser = argparse.ArgumentParser(description="NeuroXCode Command-Line Interface")
@@ -13,16 +13,15 @@ def main():
     parser_extract.add_argument("--output", type=str, required=True, help="Output file to save activations")
     parser_extract.add_argument("--layers", type=int, nargs="+", help="List of layers to extract activations from")
 
-    # Subcommand for processing activations
-    parser_process = subparsers.add_parser("process_activations", help="Process activations")
-    # Additional options for process_activations could be added here if needed
-
-    # Subcommand for clustering algorithms
-    parser_clustering = subparsers.add_parser("clustering", help="Run clustering algorithms")
-    parser_clustering.add_argument("--method", type=str, required=True, choices=["agglomerative", "kmeans", "leaders"],
-                                   help="Clustering method")
-    parser_clustering.add_argument("--input", type=str, required=True, help="Input data for clustering")
-    parser_clustering.add_argument("--output", type=str, required=True, help="Output file for clustering results")
+    # Subcommand for run_clustering
+    parser_run_clustering = subparsers.add_parser("run_clustering", help="Run clustering on extracted activations")
+    parser_run_clustering.add_argument("project_dir", type=str, help="Path to the project directory")
+    parser_run_clustering.add_argument("layer", type=int, help="Layer number (e.g., 1, 6, 12)")
+    parser_run_clustering.add_argument("clusters", type=int, help="Number of clusters to generate")
+    parser_run_clustering.add_argument("--agglomerative", action="store_true", help="Run Agglomerative Clustering")
+    parser_run_clustering.add_argument("--kmeans", action="store_true", help="Run KMeans Clustering")
+    parser_run_clustering.add_argument("--leaders", action="store_true", help="Run Leaders Clustering")
+    parser_run_clustering.add_argument("-t", "--tau", type=float, help="Specify tau value for Leaders Clustering")
 
     args = parser.parse_args()
 
@@ -33,15 +32,18 @@ def main():
     # Process activations command
     elif args.command == "process_activations":
         process_activations()
-
+    
     # Clustering command
-    elif args.command == "clustering":
-        if args.method == "agglomerative":
-            AgglomerativeClustering(args.input, args.output)
-        elif args.method == "kmeans":
-            KMeansClustering(args.input, args.output)
-        elif args.method == "leaders":
-            LeadersClustering(args.input, args.output)
+    elif args.command == "run_clustering":
+        run_clustering(
+            args.project_dir,
+            args.layer,
+            args.clusters,
+            agglomerative=args.agglomerative,
+            kmeans=args.kmeans,
+            leaders=args.leaders,
+            tau=args.tau
+        )
 
 if __name__ == "__main__":
     main()

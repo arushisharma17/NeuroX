@@ -1,7 +1,7 @@
 import argparse
 import os
 from NeuroXCode.process_activations.extract_activations import main as extract_activations
-from .process_and_cluster import main as process_and_cluster
+from ..process_and_cluster import main as process_and_cluster
 
 def main():
     parser = argparse.ArgumentParser(description="Run extraction and clustering pipeline")
