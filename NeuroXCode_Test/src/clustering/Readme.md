@@ -53,6 +53,24 @@ Clustering test completed successfully.
 - The project directory is pre-set in the script. If you need to test with a different directory, modify the `project_dir` variable in the `run_clustering_test()` function.
 - The script uses default values for each prompt. Press Enter to use the default value, or input your desired value.
 - The script constructs and executes the command that would typically be run directly in the terminal, allowing for easy testing of the clustering functionality.
+- The `generate_synthetic_data.py` script is used to generate dummy point and vocab files for testing purposes. This script creates synthetic data in the specified output directory, which can be used when running the clustering tests.
+
+## Generating Synthetic Data
+
+Before running the clustering tests, you may want to generate synthetic data using the `generate_synthetic_data.py` script. This script creates dummy point and vocab files that can be used for testing the clustering functionality.
+
+To generate synthetic data:
+
+1. Navigate to the directory containing `generate_synthetic_data.py`.
+2. Run the script using Python:
+   ```
+   python generate_synthetic_data.py
+   ```
+
+The script will create synthetic data files in the following directory:
+`LatentConceptAnalysis/NeuroX/NeuroXCode_Test/src/clustering/test_directory/CodeConceptNet/clusters/java_test/activations`
+
+These files (`processed-point.npy` and `processed-vocab.npy`) can then be used when running the clustering tests.
 
 ## Troubleshooting
 
