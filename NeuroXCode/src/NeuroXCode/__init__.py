@@ -1,8 +1,11 @@
 from .algorithms.clustering import AgglomerativeClusteringPipeline, KMeansClusteringPipeline, LeadersClusteringPipeline
-__version__ = "0.0.1"  # test to see pip working 
+from .evaluation import alignment
 
 __all__ = [
     "AgglomerativeClusteringPipeline",
     "KMeansClusteringPipeline",
-    "LeadersClusteringPipeline"
+    "LeadersClusteringPipeline",
+    "alignment"
 ]
+
+__version__ = "0.1.0"  # test to see pip working 
