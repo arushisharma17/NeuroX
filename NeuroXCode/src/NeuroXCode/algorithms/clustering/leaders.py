@@ -4,6 +4,7 @@ from sklearn.cluster import AgglomerativeClustering
 from collections import defaultdict
 import statistics
 import time
+from ...utilities.utils import save_clustering_results
 
 
 class Leaders:
@@ -35,7 +36,8 @@ class Leaders:
 
 
 class LeadersClusteringPipeline:
-    def __init__(self, K=5, tau=None, is_fast=True, ann_file=None):
+    def __init__(self, output_path='./output', K=5, tau=None, is_fast=True, ann_file=None):
+        self.output_path = output_path
         self.K = K
         self.tau = tau
         self.is_fast = is_fast
@@ -161,6 +163,9 @@ class LeadersClusteringPipeline:
         start_time = time.time()
         clustering, clusters = self.leaders_cluster(points, vocab)
         end_time = time.time()
+
+        # Save clustering results
+        save_clustering_results(clustering.labels_, clusters, self.output_path, self.K)
 
         # Log clustering process (could log to console or other logging systems in real usage)
         print(f"Clustering completed in {end_time - start_time} seconds.")
