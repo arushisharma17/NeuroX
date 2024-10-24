@@ -2,7 +2,7 @@ import json
 import numpy as np
 from tqdm import tqdm
 from collections import Counter
-from ..data import loader as data_loader
+import neurox.data.loader as data_loader
 import os
 
 
@@ -98,129 +98,6 @@ class DatasetProcessor:
         print("Dataset saved successfully.")
         return token_dataset
 
-    def generate_vocab_and_points(self, token_dataset, output_prefix):
-        """
-        Generates the vocab and points files from the token dataset.
-
-        Args:
-            token_dataset (list): A list containing the tokens and their activations.
-            output_prefix (str): Prefix for the output files to be saved.
-
-        Returns:
-            None
-        """
-        print("Generating vocab and points...")
-
-        # Extract vocab and points from token dataset
-        vocab = []
-        points = []
-
-        for entry in tqdm(token_dataset, desc="Processing token activations"):
-            token_rep, activations = entry
-            token = token_rep.split('|||')[0]  # Extract the actual token (without metadata)
-            vocab.append(token)
-            points.append(activations)
-
-        # Convert points to a numpy array for saving
-        points = np.array(points)
-
-        # Save vocab and points to files
-        vocab_file = f"{output_prefix}_processed_vocab.npy"
-        points_file = f"{output_prefix}_processed_points.npy"
-
-        print(f"Saving vocab to {vocab_file}")
-        np.save(vocab_file, vocab)
-
-        print(f"Saving points to {points_file}")
-        np.save(points_file, points)
-
-        print("Vocab and points files generated successfully.")
-
-    def count_word_frequencies(self, dataset):
-        """
-        Counts word frequencies from the dataset.
-
-        Args:
-            dataset (list): List of tokenized data with words and activations.
-
-        Returns:
-            dict: A dictionary mapping words to their respective frequencies.
-        """
-        word_count = {}
-        for entry in dataset:
-            token_rep = entry[0]  # This is the token|||index|||sentence_idx part
-            word = token_rep.split('|||')[0]  # Extract the actual word/token
-            word_count[word] = word_count.get(word, 0) + 1
-
-        print(f"Word types: {len(word_count)}, Word tokens: {sum(word_count.values())}")
-        return word_count
-
-    def filter_by_frequency(self, dataset, word_count, min_freq, max_freq, del_freq):
-        """
-        Filters the dataset based on word frequency thresholds.
-
-        Args:
-            dataset (list): The dataset containing token and activation information.
-            word_count (dict): A dictionary containing word frequencies.
-            min_freq (int): Minimum frequency threshold to retain words.
-            max_freq (int): Maximum frequency threshold to retain words.
-            del_freq (int): Frequency threshold above which words are excluded.
-
-        Returns:
-            list: A filtered dataset with words that meet the frequency conditions.
-        """
-        curr_count = {}
-        filtered_data = []
-
-        for entry in dataset:
-            word, _, sentence_idx, label_idx = self.get_pieces(entry[0])
-
-            if word_count.get(word, 0) > del_freq:  # Skip most frequent words
-                continue
-            if word_count.get(word, 0) < min_freq:  # Skip rare words
-                continue
-            if curr_count.get(word, 0) >= max_freq:  # Skip if exceeding max frequency
-                continue
-
-            curr_count[word] = curr_count.get(word, 0) + 1
-            filtered_data.append(entry)
-
-        return filtered_data
-
-    def process_dataset(self, input_file, sentence_file, min_freq, max_freq, del_freq, output_prefix):
-        """
-        Processes the dataset by counting word frequencies, filtering based on frequency, and generating vocab and points.
-
-        Args:
-            input_file (str): Full path to the input dataset file.
-            sentence_file (str): Full path to the sentence file.
-            min_freq (int): Minimum frequency threshold for word inclusion.
-            max_freq (int): Maximum frequency threshold for word inclusion.
-            del_freq (int): Maximum allowable frequency before exclusion.
-            output_prefix (str): Prefix for the output files to be saved.
-
-        Returns:
-            None
-        """
-        # Step 1: Load the dataset and sentences
-        dataset = self.load_files(input_file)
-        sentences = self.load_files(sentence_file)
-
-        # Step 2: Save the concatenated sentences
-        self.save_data(sentences, f"{output_prefix}_sentences.json")
-
-        # Step 3: Count word frequencies
-        word_count = self.count_word_frequencies(dataset)
-
-        # Step 4: Filter dataset based on frequency
-        filtered_dataset = self.filter_by_frequency(dataset, word_count, min_freq, max_freq, del_freq)
-
-        # Step 5: Save the filtered dataset
-        self.save_data(filtered_dataset, f"{output_prefix}_filtered_dataset.json")
-
-        # Step 6: Generate vocab and points files from the filtered dataset
-        self.generate_vocab_and_points(filtered_dataset, output_prefix)
-
     @staticmethod
     def get_pieces(line):
         """
@@ -234,35 +111,3 @@ class DatasetProcessor:
         """
         pieces = line.rsplit("|||", 3)
         return pieces
-
-
-# Example usage
-if __name__ == "__main__":
-    # Step 1: Define full paths to the input files
-    activations_file = '/content/NeuroX/examples/test_layer_activations-layer1.json'
-    tokens_file = '/content/NeuroX/examples/test.in'
-    labels_file = '/content/NeuroX/examples/test.label'
-
-    # Initialize the dataset processor
-    dataset_processor = DatasetProcessor()
-
-    # Use the directory and prefix based on the tokens file
-    output_prefix = '/content/NeuroX/examples/test'
-
-    # Step 2: Load activations and tokens using the full paths
-    activations, tokens = dataset_processor.load_activations_and_tokens(activations_file, tokens_file, labels_file)
-
-    # Step 3: Prepare dataset and save using output_prefix
-    token_dataset = dataset_processor.prepare_dataset(activations, tokens, output_prefix)
-
-    # Step 4: Process dataset with frequency filtering and generate vocab and points
-    input_file = '/content/NeuroX/examples/test_token_activations.json'
-    sentence_file = '/content/NeuroX/examples/test_token_sentences.json'
-
-    # Frequency thresholds
-    min_freq = 5
-    max_freq = 50
-    del_freq = 500000
-
-    # Run the process
-    dataset_processor.process_dataset(input_file, sentence_file, min_freq, max_freq, del_freq, output_prefix)

@@ -4,6 +4,7 @@ import codecs
 import argparse
 import json
 
+
 def word_count_from_files(files):
     """
     Reads multiple files and computes the word count for each word.
@@ -14,19 +15,21 @@ def word_count_from_files(files):
     Returns:
         dict: A dictionary where the keys are words and the values are the count of occurrences.
     """
-    wordCount = {}
-    
+    all_data = []
     for file in files:
-        f = codecs.open(file, encoding="utf-8")
-        print("Reading file: ", file)
-        for line in f.readlines():
-            words = line.strip().split(' ')
-            for word in words:
-                if word in wordCount:
-                    wordCount[word] += 1
-                else:
-                    wordCount[word] = 1
-    return wordCount
+        with open(file) as f:
+            all_data.extend(json.load(f))
+
+
+    word_count = {}
+    for entry in all_data:
+        token_rep = entry[0]  # This is the token|||index|||sentence_idx part
+        word = token_rep.split('|||')[0]  # Extract the actual word/token
+        word_count[word] = word_count.get(word, 0) + 1
+
+    # print(f"Word types: {len(word_count)}, Word tokens: {sum(word_count.values())}")
+    return word_count
+
 
 def save_word_count(wordCount, output_file):
     """
@@ -39,6 +42,7 @@ def save_word_count(wordCount, output_file):
     print("Saving output file")
     with open(output_file, 'w') as fp:
         json.dump(wordCount, fp)
+
 
 def print_statistics(wordCount):
     """
@@ -80,28 +84,4 @@ def print_statistics(wordCount):
     print("Types less than 3: ", lessthan3)
     print("Types less than 4: ", lessthan4)
     print("Types less than 5: ", lessthan5)
-
-def main():
-    """
-    Main entry point for the script. Parses command-line arguments, reads input files, computes word count, 
-    saves the results, and prints statistics about the word occurrences.
-    """
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument('--input-file', type=str, required=True, 
-                        help="Comma-separated list of input files to be processed.")
-    parser.add_argument('--output-file', type=str, default="output_activations.json",
-                        help="File where the word count will be saved as a JSON.")
-
-    args = parser.parse_args()
-    files = args.input_file.split(',')
-
-    wordCount = word_count_from_files(files)
-    
-    save_word_count(wordCount, args.output_file)
-    print_statistics(wordCount)
-
-# Ensure the main function runs when executed directly
-if __name__ == "__main__":
-    main()
 

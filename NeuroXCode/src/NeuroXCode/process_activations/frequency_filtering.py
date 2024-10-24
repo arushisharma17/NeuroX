@@ -59,7 +59,7 @@ def load_sentences(sentence_file):
     return sentences, files_size
 
 
-def filter_dataset(dataset_files, word_count, files_size, min_freq, max_freq, del_freq):
+def filter_dataset(dataset_files, word_count, files_size, min_freq, max_freq, del_freq, print_info=True):
     """
     Filters the dataset based on word frequencies.
     Args:
@@ -84,16 +84,15 @@ def filter_dataset(dataset_files, word_count, files_size, min_freq, max_freq, de
         print("Loading", file)
         with open(file) as f:
             dataset = json.load(f)
+            print(len(dataset), len(word_count))
             for entry in dataset:
                 word, d_wordcount, d_sentencecount, label_idx = get_pieces(entry[0])
                 d_sentencecount = int(d_sentencecount)
-
                 dataset_wordcount[word] = dataset_wordcount.get(word, 0) + 1
                 d_sentencecount += dataset_sentencecount
                 entry = (f"{word}|||{dataset_wordcount[word]}|||{d_sentencecount}|||{label_idx}", entry[1])
-
                 if word in word_count and word_count[word] > del_freq:
-                    print(f"Delete word {word}")
+                    if print_info: print(f"Delete word {word}")
                     delskip += 1
                     delskips.add(word)
                     continue
@@ -102,11 +101,11 @@ def filter_dataset(dataset_files, word_count, files_size, min_freq, max_freq, de
                         output.append(entry)
                         curr_count[word] = curr_count.get(word, 0) + 1
                     else:
-                        print(f"Crossed max frequency: {entry[0]}")
+                        if print_info: print(f"Crossed max frequency: {entry[0]}")
                         maxskip += 1
                         maxskips.add(word)
                 else:
-                    print(f"Skipping word with low frequency: {entry[0]}")
+                    if print_info: print(f"Skipping word with low frequency: {entry[0]}")
                     minskip += 1
                     minskips.add(word)
 
@@ -152,39 +151,3 @@ def print_statistics(word_count, maxskip, minskip, delskip, maxskips, minskips, 
     print(f"Types skipped based on Del freq: {len(delskips)}")
     print(f"Remaining Tokens: {sum(word_count.values()) - maxskip - minskip - delskip}")
     print(f"Remaining Types: {len(word_count) - len(minskips) - len(delskips)}")
-
-
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--input-file', type=str, required=True)
-    parser.add_argument('--frequency-file', type=str, required=True)
-    parser.add_argument('--sentence-file', type=str, required=True)
-    parser.add_argument('--minimum-frequency', type=int, default=5)
-    parser.add_argument('--maximum-frequency', type=int, default=50)
-    parser.add_argument('--delete-frequency', type=int, default=500000)
-    parser.add_argument('--output-file', type=str, default="output_activations.json")
-
-    args = parser.parse_args()
-
-    min_freq = args.minimum_frequency
-    max_freq = args.maximum_frequency
-    del_freq = args.delete_frequency
-    print(f"Min: {min_freq} Max: {max_freq} Del: {del_freq}")
-
-    word_count = load_word_count(args.frequency_file)
-    sentences, files_size = load_sentences(args.sentence_file)
-
-    filtered_output, (maxskip, minskip, delskip, maxskips, minskips, delskips) = filter_dataset(
-        args.input_file, word_count, files_size, min_freq, max_freq, del_freq)
-
-    # Save output data to files (you could skip this if you just want returned data)
-    save_to_file(sentences, f"{args.output_file}_min_{min_freq}_max_{max_freq}-sentences.json")
-    save_to_file(filtered_output, f"{args.output_file}_min_{min_freq}_max_{max_freq}_del_{del_freq}-dataset.json")
-
-    # Print statistics
-    print_statistics(word_count, maxskip, minskip, delskip, maxskips, minskips, delskips)
-
-
-if __name__ == "__main__":
-    main()
-
