@@ -11,8 +11,8 @@ import sys
 from collections.abc import Callable
 from typing import Pattern
 
-import neurox.data.loader as data_loader
-import neurox.data.utils as data_utils
+import NeuroXCode.data.loader as data_loader
+import NeuroXCode.data.utils as data_utils
 import numpy as np
 
 
