@@ -1,6 +1,6 @@
 import os
 import argparse
-from .transformers_extractor import extract_representations
+from neurox.data.extraction.transformers_extractor import extract_representations
 
 
 def create_activations_directory(output_dir, dataset_name, model_name):

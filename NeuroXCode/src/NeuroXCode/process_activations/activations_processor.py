@@ -2,7 +2,7 @@ import json
 import numpy as np
 from tqdm import tqdm
 from collections import Counter
-import NeuroXCode.process_activations.loader as data_loader
+import neurox.data.loader as data_loader
 import os
 
 
@@ -91,9 +91,9 @@ class DatasetProcessor:
 
         # Save dataset and other outputs with the generated prefix
         print("Writing datasets...")
-        self.save_data(sentences, f'{output_prefix}_token_sentences.json')
-        self.save_data(labels, f'{output_prefix}_token_labels.json')
-        self.save_data(token_dataset, f'{output_prefix}_token_activations.json')
+        self.save_data(sentences, f'{output_prefix}token_sentences.json')
+        self.save_data(labels, f'{output_prefix}token_labels.json')
+        self.save_data(token_dataset, f'{output_prefix}token_activations.json')
 
         print("Dataset saved successfully.")
         return token_dataset
