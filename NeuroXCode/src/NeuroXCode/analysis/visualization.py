@@ -3,7 +3,7 @@ import sys
 
 import svgwrite
 
-from NeuroXCode.process_activations.transformers_extractor import (
+from NeuroXCode.data.extraction.transformers_extractor import (
     extract_sentence_representations,
     get_model_and_tokenizer,
 )
