@@ -15,7 +15,7 @@ import sys
 import numpy as np
 import torch
 
-from .writer import ActivationsWriter
+from NeuroXCode.data.writer import ActivationsWriter
 
 from tqdm import tqdm
 from transformers import AutoModel, AutoTokenizer, AutoModelForCausalLM, AutoConfig
