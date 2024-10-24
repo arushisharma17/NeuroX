@@ -2,7 +2,7 @@ import json
 import numpy as np
 from tqdm import tqdm
 from collections import Counter
-import loader as data_loader
+import NeuroXCode.process_activations.loader as data_loader
 import os
 
 
