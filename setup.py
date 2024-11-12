@@ -1,4 +1,3 @@
-
 from setuptools import setup, find_packages
 
 # Read the contents of your README file
@@ -42,6 +41,9 @@ setup(
         "memory_profiler>=0.60.0",
         "pandas>=1.3.0",
         "annoy>=1.17.0",
+        "nltk>=3.6.0",
+        "tabulate>=0.8.9",
+        "hdbscan>=0.8.28",
     ],
     python_requires=">=3.6",
     extras_require={
