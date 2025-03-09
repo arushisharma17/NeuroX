@@ -44,6 +44,8 @@ setup(
         "nltk>=3.6.0",
         "tabulate>=0.8.9",
         "hdbscan>=0.8.28",
+        "google-generativeai>=0.8.4",
+        "python-dotenv>=1.0.0",
     ],
     python_requires=">=3.6",
     extras_require={
